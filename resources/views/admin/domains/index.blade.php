@@ -40,6 +40,12 @@
                                         {{ trans('cruds.domain.fields.background') }}
                                     </th>
                                     <th>
+                                        {{ trans('cruds.domain.fields.primarycolour') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.domain.fields.secondarycolour') }}
+                                    </th>
+                                    <th>
                                         &nbsp;
                                     </th>
                                 </tr>
@@ -68,6 +74,12 @@
                                                     <img src="{{ $domain->background->getUrl('thumb') }}">
                                                 </a>
                                             @endif
+                                        </td>
+                                        <td>
+                                            <span style="display: inline-block; width: 1.5em; background-color: #{{ $domain->primarycolour ?? 'fff' }}">&nbsp;</span>  {{ $domain->primarycolour ?? '' }}
+                                        </td>
+                                        <td>
+                                            <span style="display: inline-block; width: 1.5em; background-color: #{{ $domain->secondarycolour ?? 'fff' }}">&nbsp;</span>  {{ $domain->secondarycolour ?? '' }}
                                         </td>
                                         <td>
                                             @can('domain_show')

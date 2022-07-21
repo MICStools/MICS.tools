@@ -45,6 +45,22 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.domain.fields.background_helper') }}</span>
                         </div>
+                        <div class="form-group {{ $errors->has('primarycolour') ? 'has-error' : '' }}">
+                            <label for="primarycolour">{{ trans('cruds.domain.fields.primarycolour') }}</label>
+                            <input class="form-control" type="text" name="primarycolour" id="primarycolour" value="{{ old('primarycolour', $domain->primarycolour) }}" required>
+                            @if($errors->has('primarycolour'))
+                                <span class="help-block" role="alert">{{ $errors->first('primarycolour') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.domain.fields.primarycolour_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('secondarycolour') ? 'has-error' : '' }}">
+                            <label for="secondarycolour">{{ trans('cruds.domain.fields.secondarycolour') }}</label>
+                            <input class="form-control" type="text" name="secondarycolour" id="secondarycolour" value="{{ old('secondarycolour', $domain->secondarycolour) }}" required>
+                            @if($errors->has('secondarycolour'))
+                                <span class="help-block" role="alert">{{ $errors->first('secondarycolour') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.domain.fields.secondarycolour_helper') }}</span>
+                        </div>
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">
                                 {{ trans('global.save') }}

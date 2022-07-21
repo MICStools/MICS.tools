@@ -53,6 +53,22 @@
                                         @endif
                                     </td>
                                 </tr>
+                                <tr>
+                                    <th>
+                                        {{ trans('cruds.domain.fields.primarycolour') }}
+                                    </th>
+                                    <td>
+                                        {{ $domain->primarycolour }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        {{ trans('cruds.domain.fields.secondarycolour') }}
+                                    </th>
+                                    <td>
+                                        {{ $domain->secondarycolour }}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <div class="form-group">
