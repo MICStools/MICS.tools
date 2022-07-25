@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 pt-2"><h2>Create a project page</h2></div>
-        <div class="col-md-12"><p>Connect your project, yourself and your cause to the worldwide community of citizen science.</p></div>
+        <div class="col-md-12"><p>Connect your project, yourself and your cause to the worldwide community of citizen science. For troubleshooting, see the <a href="https://about.mics.tools/how-to">how-to guide</a>; for any other questions, see <a href="https://about.mics.tools/wtf">where to find help</a>.</p></div>
     </div>
     <div class="row justify-content-center">
         <div class="col-md-4 p-0 card" style="background-image: url('/createproject1.svg'); background-size: cover; background-repeat: no-repeat;">
