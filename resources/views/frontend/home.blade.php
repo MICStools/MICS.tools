@@ -131,8 +131,8 @@
                                 @endphp
                                 
                                 <li class="projectbox {{ $topiclist }}">
-                                    <div class="bannerwrapper"><img class="projectbanner" src="{{ $project->banner ? $project->banner->getUrl() : '/css/stock_banner_'. rand(1,6) .'.png' }}" alt=""></div>
-                                    <div class="logowrapper"><img class="projectlogo" src="{{ $project->logo ? $project->logo->getUrl() : '/css/defaultlogo.png' }}" alt=""></div>
+                                    <div class="bannerwrapper"><img class="projectbanner" src="{{ $project->banner ? $project->banner->getUrl() : '/css/stock_banner_'. rand(1,6) .'.png' }}" alt="" loading="lazy"></div>
+                                    <div class="logowrapper"><img class="projectlogo" src="{{ $project->logo ? $project->logo->getUrl() : '/css/defaultlogo.png' }}" alt="" loading="lazy"></div>
                                     <a class="btn btn-info" href="/projects/{{$project->slug}}">{{ Str::limit($project->shortname, 16) }}</a>
                                 </li>
                             @endif
