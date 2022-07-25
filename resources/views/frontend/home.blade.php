@@ -54,12 +54,12 @@
                     <ul id="topiclist">
                         <li>
                             <input type="radio" id="topic_showall" name="topicradios" value="showall" checked onchange="showTopics(this)">
-                            <label for="topic_showall">All topics</label>
+                            <label for="topic_showall">All projects</label>
                         </li>
                         @foreach($topics as $topic)
                             <li>
                                 <input type="radio" id="topic_{{ $topic->slug }}" name="topicradios" value="{{ $topic->slug }}" onchange="showTopics(this)">
-                                <label for="topic_{{ $topic->slug }}">{{ $topic->name }}</label>
+                                <label for="topic_{{ $topic->slug }}">{{ $topic->name }} <small>({{ $topic->projects_count }})</small></label>
                             </li>
                         @endforeach
                     </ul>

@@ -306,7 +306,7 @@
 
             <div id="returnnav">
                 <ul class="p-0 m-0 d-flex flex-row justify-content-between">
-                    <li><a class="how-to-play" href="https://about.mics.tools/how-to" target="_blank" rel="help"><i class="fa fa-question-circle" aria-hidden="true"></i> How to play</a></li>
+                    <li><a class="how-to-play" href="https://about.mics.tools/how-to" target="_blank" rel="help"><i class="fa fa-question-circle" aria-hidden="true"></i> How-to guide</a></li>
                     <li><a class="return-to-map" href="/assessment/{{ $project->slug }}"><i class="fa fa-map-o" aria-hidden="true"></i> Go to domain map</a></li>
                     <li><a class="return-to-project" href="/projects/{{ $project->slug }}"><i class="fa fa-undo" aria-hidden="true"></i> Return to project page</a></li>
                 </ul>

@@ -1113,3 +1113,10 @@ td.recommendationscore {
     #topiclist input:checked+label {
         background-color: var(--mics-green);
     }
+
+    #topiclist small {
+        color: #888;
+        font-size: 66%;
+        display: inline-block;
+        vertical-align: text-top;
+    }

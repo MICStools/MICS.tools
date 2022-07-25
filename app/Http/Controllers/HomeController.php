@@ -10,22 +10,20 @@ use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+// When not logged in
+
 class HomeController extends Controller
 {
     
     public function index()
     {
-        $myprojects = [];
+        $myprojects = []; // not logged in
 
-        if (Auth::check()) {
-            $myprojects = Project::where('user_id', Auth::id())->get();
-        }
-
-        $projects = Project::with(['user'])->get();
+        $projects = Project::orderBy('name')->with(['user'])->get();
       
-        $topics = Topic::orderBy('order', 'asc')->get();
+        $topics = Topic::orderBy('order', 'asc')->withCount('projects')->get();
 
-        $featuredcount= Project::where('featured',1)->count();
+        $featuredcount = Project::where('featured',1)->count();
       
         return view('frontend.home', compact('projects', 'myprojects', 'topics', 'featuredcount'));
     }
