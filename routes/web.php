@@ -4,8 +4,8 @@
 Route::get('/', 'HomeController@index');
 Route::get('/check_slug', 'ProjectsController@check_slug')->name('projects.check_slug');
 Route::get('/projects/create', 'ProjectsController@create');
-Route::get('/projects/{project_id}', 'ProjectsController@show');
-Route::get('/projects/{project_id}/summary', 'ProjectsController@summary');
+Route::get('/projects/{project_slug}', 'ProjectsController@show');
+Route::get('/projects/{project_slug}/summary', 'ProjectsController@summary');
 
 Route::get('userVerification/{token}', 'UserVerificationController@approve')->name('userVerification');
 Route::get('/email/verify', function () {

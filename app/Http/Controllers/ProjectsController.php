@@ -133,89 +133,9 @@ class ProjectsController extends Controller
         }
         $totalprogress = round($totalprogress / 6); # Find the average percentage from the 6 domains
 
-        // Compile all questions and answers into binary CSV string for Octave
-        $questions = Question::with(['questionAnswers', 'questionAnswers.projects'])->orderBy('title')->get();
-        $csvstring = '';
-        $csvarray = [];
-        $rowcount = $questions->count(); #152;
-        foreach ($questions as $question) {
-            $rowcount--;
-            $colcount = 20;
-            $csvrow = '';
-            foreach ($question->questionAnswers as $answer) {
-                $colcount--;
-                if ($answer->projects->contains($project->id)) {
-                    $csvrow .= '1,';
-                } else {
-                    $csvrow .= '0,';
-                }
-            }
-            // pad out columns with zeroes
-            for ($i = $colcount; $i > 0; $i--) {
-                $csvrow .= '0,';
-            }
-            $csvstring .= $csvrow;
-            // truncate to 152 rows for now, as Octave script is fragile
-            $csvrow = rtrim($csvrow, ","); // remove final comma
-            if ($rowcount >= 0) $csvarray[] = $csvrow;
-        }
-
-        // pad out any remaining rows with zeroes (not used unless there's a fixed hard-coded rowcount)
-        $csvrow = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,";
-        for ($i = $rowcount; $i > 0; $i--) {
-            $csvstring .= $csvrow;
-            $csvrow = rtrim($csvrow, ","); // remove final comma
-            $csvarray[] = $csvrow;
-        }
+        // Run the Octave neural net, which saves the Results to the Results table
+        Artisan::call('octave:run', ['project_id' => $project->id]);
         
-        //ddd($csvstring);
-
-        // Get the Octave Results from AWS API
-        //$response = Http::get('http://dev.mics.tools/octave.php?X1=' . $csvstring);
-        
-        //$response = Http::asForm()->post('http://dev.mics.tools/post.php', [
-        //    'X1' => $csvarray,
-        //    'secret' => '3E5RSKic2WzoDhR2po7G',
-        //]);
-
-        $response = Http::asForm()->post('http://dev.mics.tools/octave.php', $csvarray);
-        //ddd($response->json());
-
-        if (null == $response) {
-            $response = [0,0,0,0,0];
-        } 
-
-        // Assuming hard coded order of results, array of 5 integers between 0-42
-        // In order Society,    Governance, Economy,    Environment,    Science
-        // which is 6,          4,          2,          3,              5       by Domain->id
-        $totalscore = 0;
-
-        Result::updateOrCreate(
-            ['domain_id' => 6,'project_id' => $project->id],
-            ['score' => $response->json()[0]]
-        );
-        $totalscore += $response->json()[0];
-        Result::updateOrCreate(
-            ['domain_id' => 4, 'project_id' => $project->id],
-            ['score' => $response->json()[1]]
-        );
-        $totalscore += $response->json()[1];
-        Result::updateOrCreate(
-            ['domain_id' => 2, 'project_id' => $project->id],
-            ['score' => $response->json()[2]]
-        );
-        $totalscore += $response->json()[2];
-        Result::updateOrCreate(
-            ['domain_id' => 3, 'project_id' => $project->id],
-            ['score' => $response->json()[3]]
-        );
-        $totalscore += $response->json()[3];
-        Result::updateOrCreate(
-            ['domain_id' => 5, 'project_id' => $project->id],
-            ['score' => $response->json()[4]]
-        );
-        $totalscore += $response->json()[4];
-
         // Now get the rest of the data 
 
         // Prepare data for Google GeoChart to display the map on the Front End in JS
@@ -262,7 +182,9 @@ class ProjectsController extends Controller
         //$totalscore = $project->projectResults->sum('score');
 
         // Process the Octave Results for display - move this to the database!
-        foreach ($project->projectResults as $result) {
+        $results = Result::where('project_id', $project->id)->get();
+
+        foreach ($results as $result) {
             if (0 < $totalscore) {
                 $result['percentage'] = $result->score / $totalscore;
             } else {
@@ -293,7 +215,7 @@ class ProjectsController extends Controller
         // Calculate the average for in the middle of the pie chart
         $average = round(42 * ($totalscore / (42*5)));
 
-        return view('frontend.projects.summary', compact('project', 'domainRecommendations', 'domainIndicators', 'organisersstring', 'average', 'totalprogress'));
+        return view('frontend.projects.summary', compact('project', 'results', 'domainRecommendations', 'domainIndicators', 'organisersstring', 'average', 'totalprogress'));
     }
 
 }
