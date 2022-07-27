@@ -115,8 +115,8 @@ class octaveTrain extends Command
             $yfilearray[] = $yrow;
         }
 
-        $this->line($yfilearray);
-        $this->newLine();
+        /* $this->line($yfilearray);
+        $this->newLine(); */
 
         // write out Y file
         // Make sure Y.csv has writable persmissions
@@ -127,9 +127,10 @@ class octaveTrain extends Command
         fclose($handle);
 
         // Run Octave Training script
+        // Make sure Theta1.mat and Theta2.mat have writable persmissions
         $output=null;
         $retval=null;
-        exec('octave trainingMics.m', $output, $retval);
+        exec('octave-cli trainingMics.m', $output, $retval);
 
         if (0 == $retval) {
             return Command::SUCCESS;

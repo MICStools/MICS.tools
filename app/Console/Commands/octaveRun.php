@@ -97,7 +97,7 @@ class octaveRun extends Command
         fclose($handle);
 
         // Run Octave
-        exec('octave mics.m');
+        exec('octave-cli mics.m');
 
         // Read the results from Octave
         $line = trim(fgets(fopen('impact.csv', 'r')));
