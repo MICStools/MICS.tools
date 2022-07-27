@@ -3,6 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\Project;
+use App\Models\Domain;
+use App\Models\Answer;
+use App\Models\Question;
+use App\Models\Result;
 
 class octaveTrain extends Command
 {
@@ -37,6 +42,73 @@ class octaveTrain extends Command
      */
     public function handle()
     {
-        return Command::SUCCESS;
+        // Get the first 9 training projects
+        $trainingProjects = Project::where('training', 1)->take(9)->get();
+
+        // Get all the answers, sorted by question title
+        $questions = Question::with(['questionAnswers', 'questionAnswers.projects'])->orderBy('title')->get();
+
+        chdir(storage_path() . '/app/octave');
+        // Make sure X01.csv to X09.csv have writable persmissions
+
+        // Process them
+        $projectsleft = 9;
+        foreach ($trainingProjects as $project) {
+            $projectsleft--;
+            // Compile all questions and answers into binary CSV string for Octave
+            $csvstring = '';
+            $csvarray = [];
+            $rowcount = $questions->count(); // #152; - no longer hard coded, but means training must be done after changing size of answer pool.
+            foreach ($questions as $question) {
+                $rowcount--;
+                $colcount = 20; // hard coded
+                $csvrow = '';
+                foreach ($question->questionAnswers as $answer) {
+                    $colcount--;
+                    if ($answer->projects->contains($project->id)) {
+                        $csvrow .= '1,';
+                    } else {
+                        $csvrow .= '0,';
+                    }
+                }
+                // pad out columns with zeroes
+                for ($i = $colcount; $i > 0; $i--) {
+                    $csvrow .= '0,';
+                }
+                $csvstring .= $csvrow;
+                $csvrow = rtrim($csvrow, ","); // remove final comma
+                if ($rowcount >= 0) $csvarray[] = $csvrow;
+            }
+
+            // pad out any remaining rows with zeroes (not really used unless there's a fixed hard-coded rowcount)
+            $csvrow = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"; // hard coded 20
+            for ($i = $rowcount; $i > 0; $i--) {
+                $csvstring .= $csvrow;
+                $csvrow = rtrim($csvrow, ","); // remove final comma
+                $csvarray[] = $csvrow;
+            }
+
+            $this->line((9-$projectsleft) . ': ');
+            $this->line($csvarray);
+            $this->newLine();
+
+            // Save input as X01.csv-X09.csv
+            $handle = fopen('X0' . (9-$projectsleft) . '.csv', "w");
+            foreach ($csvarray as $row) {
+                fwrite($handle, $row . "\n");
+            }
+            fclose($handle);
+
+        }
+
+        // Run Octave Training script
+        $result_code = 0;
+        exec('octave trainingMics.m', null, $result_code);
+
+        if (0 == $result_code) {
+            return Command::SUCCESS;
+        } else {
+            return Command::FAILURE;
+        }
     }
 }

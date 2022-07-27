@@ -72,12 +72,11 @@ class octaveRun extends Command
                 $csvrow .= '0,';
             }
             $csvstring .= $csvrow;
-            // truncate to 152 rows for now, as Octave script is fragile
             $csvrow = rtrim($csvrow, ","); // remove final comma
             if ($rowcount >= 0) $csvarray[] = $csvrow;
         }
 
-        // pad out any remaining rows with zeroes (not used unless there's a fixed hard-coded rowcount)
+        // pad out any remaining rows with zeroes (not really used unless there's a fixed hard-coded rowcount)
         $csvrow = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"; // hard coded 20
         for ($i = $rowcount; $i > 0; $i--) {
             $csvstring .= $csvrow;
@@ -88,7 +87,7 @@ class octaveRun extends Command
         // Octave code:
 
         chdir(storage_path() . '/app/octave');
-        // Make sure X1.csv and impact.csv have writable persmissions
+        // Make sure X01.csv and impact.csv have writable persmissions
 
         // Save input as X01.csv
         $handle = fopen('X01.csv', "w");
