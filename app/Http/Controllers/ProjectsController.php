@@ -20,6 +20,7 @@ use App\Models\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Artisan;
 
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,31 +77,12 @@ class ProjectsController extends Controller
         // work out the percentage for the total donut chart
         $totalscore = $project->projectResults->sum('score');
 
-        // Process the Octave Results for display - move this to the database!
+        // Process the Octave Results for display
         foreach ($project->projectResults as $result) {
             if (0 < $totalscore) {
                 $result['percentage'] = $result->score / $totalscore;
             } else {
                 $result['percentage'] = 0;
-            }
-            switch ($result->domain->slug) {
-                case "environment":
-                    $result->domain['colour'] = '#3ca891';
-                    break;
-                case "science":
-                    $result->domain['colour'] = '#223242';
-                    break;
-                case "economy":
-                    $result->domain['colour'] = '#2d7dc6';
-                    break;
-                case "governance":
-                    $result->domain['colour'] = '#e15477';
-                    break;
-                case "society":
-                    $result->domain['colour'] = '#eeba30';
-                    break;
-                default:
-                    $result->domain['colour'] = '#3ca891';
             }
             
         }
@@ -179,9 +161,9 @@ class ProjectsController extends Controller
         }
 
         // work out the percentage for the pie chart
-        //$totalscore = $project->projectResults->sum('score');
+        $totalscore = $project->projectResults->sum('score');
 
-        // Process the Octave Results for display - move this to the database!
+        // Process the Octave Results for display
         $results = Result::where('project_id', $project->id)->get();
 
         foreach ($results as $result) {
@@ -189,25 +171,6 @@ class ProjectsController extends Controller
                 $result['percentage'] = $result->score / $totalscore;
             } else {
                 $result['percentage'] = 0;
-            }
-            switch ($result->domain->slug) {
-                case "environment":
-                    $result->domain['colour'] = '#3ca891';
-                    break;
-                case "science":
-                    $result->domain['colour'] = '#223242';
-                    break;
-                case "economy":
-                    $result->domain['colour'] = '#2d7dc6';
-                    break;
-                case "governance":
-                    $result->domain['colour'] = '#e15477';
-                    break;
-                case "society":
-                    $result->domain['colour'] = '#eeba30';
-                    break;
-                default:
-                    $result->domain['colour'] = '#3ca891';
             }
             
         }

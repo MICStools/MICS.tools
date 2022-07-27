@@ -142,7 +142,7 @@
                                             <circle cy="-300" r="270" fill="none" stroke="#ccc" stroke-dasharray="40, 25" stroke-width="12"/>
                                             <text x="0" y="-320" dominant-baseline="middle" text-anchor="middle" class="large back" id="domaintextback">{{ $result->domain->name }}</text>
                                             <text x="0" y="-200" dominant-baseline="middle" text-anchor="middle" class="large back" id='domainscoreback'>{{ $result->score }}</text>
-                                            <circle cy="-300" r="{{ 276 * ($result->score/42) }}" fill="{{ $result->domain->colour }}" id="chartarea" />
+                                            <circle cy="-300" r="{{ 276 * ($result->score/42) }}" fill="#{{ $result->domain->primarycolour }}" id="chartarea" />
                                             <text x="0" y="-320" dominant-baseline="middle" text-anchor="middle" class="large" id="domaintext">{{ $result->domain->name }}</text>
                                             <text x="0" y="-200" dominant-baseline="middle" text-anchor="middle" class="large" id='domainscore'>{{ $result->score }}</text>
                                             @if($loop->last)
@@ -181,7 +181,7 @@
                                             $totalsofar = 0;
                                         @endphp
                                         @foreach ($project->projectResults as $result)
-                                            <circle cx="250" cy="250" fill="transparent" r="159.155" stroke="{{ $result->domain->colour }}" stroke-dasharray="{{ 1000 * $result->percentage }}, {{ 1000 * (1-$result->percentage) }}" stroke-dashoffset="{{ 250 - (1000 * $totalsofar) }}" stroke-width="60"></circle>
+                                            <circle cx="250" cy="250" fill="transparent" r="159.155" stroke="#{{ $result->domain->primarycolour }}" stroke-dasharray="{{ 1000 * $result->percentage }}, {{ 1000 * (1-$result->percentage) }}" stroke-dashoffset="{{ 250 - (1000 * $totalsofar) }}" stroke-width="60"></circle>
                                             @php
                                                 $totalsofar += $result->percentage;
                                             @endphp
