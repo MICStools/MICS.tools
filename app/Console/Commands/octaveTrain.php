@@ -119,6 +119,7 @@ class octaveTrain extends Command
         $this->newLine();
 
         // write out Y file
+        // Make sure Y.csv has writable persmissions
         $handle = fopen('Y.csv', "w");
         foreach ($yfilearray as $row) {
             fwrite($handle, $row . "\n");
@@ -126,10 +127,11 @@ class octaveTrain extends Command
         fclose($handle);
 
         // Run Octave Training script
-        $result_code = 0;
-        exec('octave trainingMics.m', null, $result_code);
+        $output=null;
+        $retval=null;
+        exec('octave trainingMics.m', $output, $retval);
 
-        if (0 == $result_code) {
+        if (0 == $retval) {
             return Command::SUCCESS;
         } else {
             return Command::FAILURE;
