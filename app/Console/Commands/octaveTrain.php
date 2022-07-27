@@ -109,7 +109,7 @@ class octaveTrain extends Command
             // We've done sortBy on the $trainingProjects collection to match this
             $yrow = '';
             foreach ($project->projectResults as $result) {
-                $yrow .= $result.',';
+                $yrow .= $result->score . ',';
             }
             $yrow = rtrim($yrow, ","); // remove final comma
             $yfilearray[] = $yrow;
