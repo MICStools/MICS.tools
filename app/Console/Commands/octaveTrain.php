@@ -43,7 +43,7 @@ class octaveTrain extends Command
     public function handle()
     {
         // Get the first 9 training projects
-        $trainingProjects = Project::where('training', 1)->take(9)->get();
+        $trainingProjects = Project::where('training', 1)->with(['projectResults' , 'projectResults.domain'])->take(9)->get()->sortBy('projectResults.domain.order');
 
         // Get all the answers, sorted by question title
         $questions = Question::with(['questionAnswers', 'questionAnswers.projects'])->orderBy('title')->get();
@@ -53,6 +53,7 @@ class octaveTrain extends Command
 
         // Process them
         $projectsleft = 9;
+        $yfilearray = [];
         foreach ($trainingProjects as $project) {
             $projectsleft--;
             // Compile all questions and answers into binary CSV string for Octave
@@ -88,9 +89,9 @@ class octaveTrain extends Command
                 $csvarray[] = $csvrow;
             }
 
-            $this->line((9-$projectsleft) . ': ');
+            /* $this->line((9-$projectsleft) . ': ');
             $this->line($csvarray);
-            $this->newLine();
+            $this->newLine(); */
 
             // Save input as X01.csv-X09.csv
             $handle = fopen('X0' . (9-$projectsleft) . '.csv', "w");
@@ -99,7 +100,30 @@ class octaveTrain extends Command
             }
             fclose($handle);
 
+            // Get saved Results for y file:
+          
+            // Assuming hard coded order of results, array of 5 integers between 0-42
+            // In order Society,    Governance, Economy,    Environment,    Science
+            // which is 6,          4,          2,          3,              5       by Domain->id
+            // which is 1,          2,          3,          4,              5       by Domain->order
+            // We've done sortBy on the $trainingProjects collection to match this
+            $yrow = '';
+            foreach ($project->projectResults as $result) {
+                $yrow .= $result.',';
+            }
+            $yrow = rtrim($yrow, ","); // remove final comma
+            $yfilearray[] = $yrow;
         }
+
+        $this->line($yfilearray);
+        $this->newLine();
+
+        // write out Y file
+        $handle = fopen('Y.csv', "w");
+        foreach ($yfilearray as $row) {
+            fwrite($handle, $row . "\n");
+        }
+        fclose($handle);
 
         // Run Octave Training script
         $result_code = 0;

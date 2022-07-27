@@ -113,6 +113,7 @@ class octaveRun extends Command
         // Assuming hard coded order of results, array of 5 integers between 0-42
         // In order Society,    Governance, Economy,    Environment,    Science
         // which is 6,          4,          2,          3,              5       by Domain->id
+        // should get from database domain.order?
         $totalscore = 0;
 
         Result::updateOrCreate(
