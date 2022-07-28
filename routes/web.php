@@ -88,7 +88,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Results
     Route::delete('results/destroy', 'ResultsController@massDestroy')->name('results.massDestroy');
-    Route::resource('results', 'ResultsController');
+    Route::get('results/train', 'ResultsController@train')->name('results.train');
+    Route::resource('results',  'ResultsController');
 
     // Topics
     Route::delete('topics/destroy', 'TopicsController@massDestroy')->name('topics.massDestroy');

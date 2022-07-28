@@ -9,7 +9,7 @@
                 </a>
             </div>
             <div class="col-lg-6 text-right">
-                <a class="btn btn-success" href="#">
+                <a class="btn btn-success" href="{{ route('admin.results.train') }}">
                     Train neural net
                 </a>
             </div>

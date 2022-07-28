@@ -140,10 +140,10 @@
                                         <g transform="translate(300,600)">
                                             <circle cy="-300" r="290" fill="none" stroke="#ccc" stroke-width="12"/>
                                             <circle cy="-300" r="270" fill="none" stroke="#ccc" stroke-dasharray="40, 25" stroke-width="12"/>
-                                            <text x="0" y="-320" dominant-baseline="middle" text-anchor="middle" class="large back" id="domaintextback">{{ $result->domain->name }}</text>
+                                            <text x="0" y="-320" dominant-baseline="middle" text-anchor="middle" class="large back" id="domaintextback">{{ Str::ucfirst($result->domain->slug) }}</text>
                                             <text x="0" y="-200" dominant-baseline="middle" text-anchor="middle" class="large back" id='domainscoreback'>{{ $result->score }}</text>
                                             <circle cy="-300" r="{{ 276 * ($result->score/42) }}" fill="#{{ $result->domain->primarycolour }}" id="chartarea" />
-                                            <text x="0" y="-320" dominant-baseline="middle" text-anchor="middle" class="large" id="domaintext">{{ $result->domain->name }}</text>
+                                            <text x="0" y="-320" dominant-baseline="middle" text-anchor="middle" class="large" id="domaintext">{{ Str::ucfirst($result->domain->slug) }}</text>
                                             <text x="0" y="-200" dominant-baseline="middle" text-anchor="middle" class="large" id='domainscore'>{{ $result->score }}</text>
                                             @if($loop->last)
                                                 <text x="120" y="45" dominant-baseline="middle" text-anchor="middle" class="legend">max. 42</text>

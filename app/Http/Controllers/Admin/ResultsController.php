@@ -9,8 +9,12 @@ use App\Http\Requests\UpdateResultRequest;
 use App\Models\Domain;
 use App\Models\Project;
 use App\Models\Result;
+
 use Gate;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class ResultsController extends Controller
@@ -22,6 +26,16 @@ class ResultsController extends Controller
         $results = Result::with(['domain', 'project'])->get();
 
         return view('admin.results.index', compact('results'));
+    }
+
+    public function train()
+    {
+        abort_if(Gate::denies('result_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // Run the Octave neural net training script, which updates the Y and Theta files
+        Artisan::call('octave:train');
+
+        return redirect()->route('admin.results.index')->with('message', 'Neural net trained');
     }
 
     public function create()
@@ -86,4 +100,5 @@ class ResultsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
 }
