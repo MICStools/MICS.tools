@@ -55,7 +55,7 @@ class AssessmentController
 
     public function show($project_slug, $domain_slug)
     {
-        $project = Project::where('slug', $project_slug)->with(['projectsAnswers', 'user'])->first();
+        $project = Project::where('slug', $project_slug)->with(['projectsAnswers', 'user', 'projectsAnswers.answerBlocklists.questions'])->first();
         
         $domains = Domain::withCount(['domainQuestions'])->get();
 
@@ -92,8 +92,18 @@ class AssessmentController
         $currentdomain = Domain::where('slug', $domain_slug)->with(['domainQuestions.questionAnswers'])->first();
         $questionsanswered = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $currentdomain->id)->groupBy('question_id')->pluck('question_id', 'question_id')->count();
 
+        // get blocked questions
+        $blocklist = [];
+        foreach ($project->projectsAnswers as $answer) { 
+            foreach ($answer->answerBlocklists as $blocklist) { 
+                foreach ($blocklist->questions as $question ) { 
+                    //$blocklist[] = $question->id;
+                }  
+            } 
+        }
+
         if ($project && $project->user->id == Auth::user()->id) {
-            return view('frontend.assessment', compact('project', 'currentdomain', 'questionsanswered', 'domains'));
+            return view('frontend.assessment', compact('project', 'currentdomain', 'questionsanswered', 'domains', 'blocklist'));
         } else {
             abort(403, "Sorry, this Project doesn't belong to you.");
         }

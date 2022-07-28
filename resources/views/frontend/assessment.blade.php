@@ -59,6 +59,31 @@
         </div>
     </div> <!-- scoreboard -->
 
+    <svg width="0" height="0"> <!-- set up some styles for later -->
+        <style>
+            @font-face {
+                font-family: Halcom-Medium;
+                src: url("/css/Halcom-Medium.otf") format("opentype");
+            }
+
+            .unanswered { 
+                font: 300% Halcom-Medium,sans-serif; 
+                fill: #00f;
+                font-weight: lighter;
+                stroke: #{{ $currentdomain->primarycolour }};
+            }
+            .answered {
+                font: 250% Halcom-Medium,sans-serif; 
+                stroke: #0f0;
+                stroke-width: 10px;
+            }
+            .blocked { 
+                font: 250% Halcom-Medium,sans-serif; 
+                fill: #f00;
+            }
+        </style>
+    </svg>
+
     <div id="dotpathdiv">
         <object id="dotpath" type="image/svg+xml" data="{{ $currentdomain->background ? $currentdomain->background->getUrl() : '/defaultbackground.svg' }}"></object>
     </div>
@@ -129,10 +154,11 @@
 
                     // set colour based on if answered or not
                     if (answerarray.length < 1) {
-                        circle.setAttributeNS(null, 'style', 'fill: #fffdd0; stroke: gray; stroke-width: 5px; cursor: pointer;' );
-
+                        circle.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                        label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                     } else {
-                        circle.setAttributeNS(null, 'style', 'fill: gray; stroke: green; stroke-width: 5px; cursor: pointer;' );
+                        circle.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                        label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                     }
 
                     layer1.appendChild(circle);
@@ -216,12 +242,15 @@
                 dotpath = document.getElementById('dotpath');
                 dotnameid = 'dot-'+(dotid-1);
                 dot = dotpath.contentDocument.getElementById(dotnameid);
+                label = dot.nextElementSibling;
                 console.log('Updating dot with id '+dotnameid);
                 if (answerarray.length < 1) { // unanswered
-                    dot.setAttributeNS(null, 'style', 'fill: rgb(255, 253, 208); stroke: gray; stroke-width: 5px; cursor: pointer;' );
+                    dot.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                    label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                     console.log('unanswered');
                 } else { // answered
-                    dot.setAttributeNS(null, 'style', 'fill: gray; stroke: green; stroke-width: 5px; cursor: pointer;' );
+                    dot.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                    label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                     console.log('answered');
                 }
             }
