@@ -253,4 +253,38 @@
         </div>
     </div>
 </div>
+
+<ol class='questions'>
+<li class="question" id="tutorial" style="visibility: hidden;">
+    <div class="questionbox domain-general">
+        <h4 class="text-center">General: Question 1</h4>
+        <div class="questiontext"><p>This is the beginning of a journey (some would say a "<a href="https://dl.acm.org/doi/abs/10.1145/1518701.1518812">trajectory</a>") along more than 200 questions. Don't worry; you don't have to answer them all at once. Do something, and come back some other day. You will find a lot of help along the way, and if you're generally happy to start, just click on "Ok, I got it!" below. If you have doubts, now or later, for example, if you are unsure whether to answer questions as a big umbrella project or as its sub-projects, head to [<a href="https://about.mics.tools/wtf">about.mics.tools/wtf</a>], where you will find additional help, advice and all the clarity you might look for.</p></div>
+        <ul class="answers">
+            <li>
+                <input type="radio" id="radioanswer-335-1141" name="radioset-335" value="1141">
+                <label for="radioanswer-335-1141">OK, got it!</label>
+            </li>
+        </ul>
+        
+        <div class="submitbuttons">
+            <a href="javascript:void(0);" class="backtoroute" onclick="document.getElementById('tutorial').style.visibility = 'hidden';"><i class="fa fa-times"></i></a>
+        </div>
+
+        <ul class="helpinfo" style="background: url('/generalTL.svg'), url('/generalTR.svg'), url('/generalBL.svg'), url('/generalBR.svg'); background-repeat: no-repeat, no-repeat, no-repeat, no-repeat; background-position: top left, top right, bottom left, bottom right; background-size: 15%, 15%, 15%, 15%;">
+        </ul>       
+    </div>
+</li>
+</ol>
+
+<script type="text/javascript">
+    document.addEventListener( "DOMContentLoaded", showTutorialIfNewlyCreated());
+    function showTutorialIfNewlyCreated() {
+        var referrer = document.referrer;
+        if(referrer.indexOf("/projects/create") > -1) {          
+            console.log('Came from /projects/create referrer = ' + referrer + 'so show tutorial');
+            document.getElementById('tutorial').style.visibility = 'visible';
+        }
+    }
+ </script>
+
 @endsection

@@ -19,6 +19,10 @@ class HomeController extends Controller
     {
         $myprojects = []; // not logged in
 
+        if (Auth::check()) {
+            $myprojects = Project::where('user_id', Auth::id())->get();
+        }
+
         $projects = Project::orderBy('name')->with(['user'])->get();
       
         $topics = Topic::orderBy('order', 'asc')->withCount('projects')->get();
