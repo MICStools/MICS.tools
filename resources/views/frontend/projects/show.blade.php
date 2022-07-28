@@ -43,14 +43,14 @@
                             <dd>{{ $project->contact }} - {{ $project->contactdetails }}</dd>
                         @endif
 
-                        @if ($project->cost && $project->cost != "0.00")
+                        @if ($project->cost)
                             <dt>Project cost:</dt>
-                            <dd>{{ number_format($project->cost, 2) }}</dd>
+                            <dd>{{ $project->cost }}</dd>
                         @endif
 
-                        @if ($project->funding && $project->funding != "0.00")
+                        @if ($project->funding)
                             <dt>Funding amount:</dt>
-                            <dd>{{ number_format($project->funding, 2) }}</dd>
+                            <dd>{{ $project->funding }}</dd>
                         @endif
 
                         @if ($project->uri)
@@ -216,7 +216,7 @@
 
                             <ul style="list-style: none; padding: 0;">
                                 @foreach ($domains as $domain)
-                                    <li style="color: {{ $domain->colour }}; margin-bottom: 1em;">
+                                    <li style="color: #{{ $domain->primarycolour }}; margin-bottom: 1em;">
                                         @if (Auth::user() && $project->user->id == Auth::user()->id) 
                                             <a href="/assessment/{{ $project->slug }}/{{$domain->slug}}">
                                         @endif
@@ -228,13 +228,13 @@
                                         <svg width="100%" viewbox="0 0 1180 175">
                                             <g transform="translate(-63.76 -813.783)">
                                                 <path d="M166.896 901.706h979.716" style="fill:none;stroke:#b3b3b3;stroke-width:20;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
-                                                <path d="M166.896 901.706h{{ $xlineto }}" style="fill:none;stroke:{{ $domain->colour }};stroke-width:20;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
-                                                <circle r="60" cy="901.706" cx="{{ $circlemidpoint }}" style="fill:#fff;stroke:{{ $domain->colour }};stroke-width:10;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"/>
-                                                <text y="915" x="{{ $textmidpoint + 40 }}" fill="{{ $domain->colour }}" text-anchor="middle" class="percent">{{ $domain->percentanswered }}%</text>
-                                                <circle r="60" cy="901.706" cx="151.683" style="fill:#fff;stroke:{{ $domain->colour }};stroke-width:10;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"/>
+                                                <path d="M166.896 901.706h{{ $xlineto }}" style="fill:none;stroke:#{{ $domain->primarycolour }};stroke-width:20;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+                                                <circle r="60" cy="901.706" cx="{{ $circlemidpoint }}" style="fill:#fff;stroke:#{{ $domain->primarycolour }};stroke-width:10;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"/>
+                                                <text y="915" x="{{ $textmidpoint + 40 }}" fill="#{{ $domain->primarycolour }}" text-anchor="middle" class="percent">{{ $domain->percentanswered }}%</text>
+                                                <circle r="60" cy="901.706" cx="151.683" style="fill:#fff;stroke:#{{ $domain->primarycolour }};stroke-width:10;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"/>
                                             </g>
-                                            <text x="165" y="30" fill="{{ $domain->colour }}" dominant-baseline="middle" text-anchor="left" class="name">{{ $domain->name }}</text>
-                                            <text x="1000" y="32" fill="{{ $domain->colour }}" dominant-baseline="middle" text-anchor="end" class="fraction">({{ $domain->questionsanswered }}/{{ $domain->domain_questions_count }})</text>
+                                            <text x="165" y="30" fill="#{{ $domain->primarycolour }}" dominant-baseline="middle" text-anchor="left" class="name">{{ $domain->name }}</text>
+                                            <text x="1000" y="32" fill="#{{ $domain->primarycolour }}" dominant-baseline="middle" text-anchor="end" class="fraction">({{ $domain->questionsanswered }}/{{ $domain->domain_questions_count }})</text>
                                         </svg>
                                         @if (Auth::user() && $project->user->id == Auth::user()->id) 
                                             </a>

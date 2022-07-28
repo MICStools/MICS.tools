@@ -51,26 +51,6 @@ class ProjectsController extends Controller
                 $domain['percentanswered'] = 0;
             }
             $totalprogress += $domain['percentanswered'];
-            // getting ridiculous - put this in the DB!
-            switch ($domain->slug) {
-                case "environment":
-                    $domain['colour'] = '#3ca891';
-                    break;
-                case "science":
-                    $domain['colour'] = '#223242';
-                    break;
-                case "economy":
-                    $domain['colour'] = '#2d7dc6';
-                    break;
-                case "governance":
-                    $domain['colour'] = '#e15477';
-                    break;
-                case "society":
-                    $domain['colour'] = '#eeba30';
-                    break;
-                default:
-                    $domain['colour'] = '#666666';
-            }
         }
         $totalprogress = round($totalprogress / 6); # Find the average percentage from the 6 domains
 

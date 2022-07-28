@@ -160,12 +160,7 @@
                         </div>
                         <div class="form-group">
                             <label for="cost">{{ trans('cruds.project.fields.cost') }} <span class="help-block">{{ trans('cruds.project.fields.cost_helper') }}</span></label>
-                            <div class="input-group mb-2 mr-sm-2">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text"><span class="font-italic">$/£/€</span></div>
-                                </div>
-                                <input class="form-control" type="number" name="cost" id="cost" value="{{ old('cost', '0') }}" step="1">
-                            </div>
+                            <input class="form-control" type="text" name="cost" id="cost" value="{{ old('cost', '') }}">
                             @if($errors->has('cost'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('cost') }}
@@ -174,12 +169,7 @@
                         </div>
                         <div class="form-group">
                             <label for="funding">{{ trans('cruds.project.fields.funding') }} <span class="help-block">{{ trans('cruds.project.fields.funding_helper') }}</span></label>
-                            <div class="input-group mb-2 mr-sm-2">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text"><span class="font-italic">$/£/€</span></div>
-                                </div>
-                                <input class="form-control" type="number" name="funding" id="funding" value="{{ old('funding', '0') }}" step="1">
-                            </div>
+                            <input class="form-control" type="text" name="funding" id="funding" value="{{ old('funding', '') }}">
                             @if($errors->has('funding'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('funding') }}
