@@ -340,6 +340,15 @@
                     <li><a class="return-to-project" href="/projects/{{ $project->slug }}"><i class="fa fa-undo" aria-hidden="true"></i> Return to project page</a></li>
                 </ul>
             </div><!-- returnnav -->
+
+            <!-- 
+                @if (in_array(26, $blocklist))
+                    26 is in blocklist: 
+                @endif
+                @foreach($blocklist as $blocker)
+                    {{ $blocker }}
+                @endforeach
+            -->
         
 </div><!-- container -->
 @endsection

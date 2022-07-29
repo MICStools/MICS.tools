@@ -55,7 +55,7 @@ class AssessmentController
 
     public function show($project_slug, $domain_slug)
     {
-        $project = Project::where('slug', $project_slug)->with(['projectsAnswers', 'user', 'projectsAnswers.answerBlocklists.questions'])->first();
+        $project = Project::where('slug', $project_slug)->with(['projectsAnswers', 'user'])->first();
         
         $domains = Domain::withCount(['domainQuestions'])->get();
 
@@ -93,14 +93,7 @@ class AssessmentController
         $questionsanswered = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $currentdomain->id)->groupBy('question_id')->pluck('question_id', 'question_id')->count();
 
         // get blocked questions
-        $blocklist = [];
-        foreach ($project->projectsAnswers as $answer) { 
-            foreach ($answer->answerBlocklists as $blocklist) { 
-                foreach ($blocklist->questions as $question ) { 
-                    //$blocklist[] = $question->id;
-                }  
-            } 
-        }
+        $blocklist = Project::where('id', $project->id)->with('projectsAnswers.answerBlocklists.questions')->get()->pluck('projectsAnswers.*.answerBlocklists.*.questions.*.id')->collapse()->unique()->toArray();
 
         if ($project && $project->user->id == Auth::user()->id) {
             return view('frontend.assessment', compact('project', 'currentdomain', 'questionsanswered', 'domains', 'blocklist'));
@@ -132,7 +125,10 @@ class AssessmentController
 
             $questionsanswered = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $domain_id)->groupBy('question_id')->pluck('question_id', 'question_id')->count();
 
-            return response()->json(['questionsanswered' => $questionsanswered]);
+            // get blocked questions
+            $blocklist = Project::where('id', $project->id)->with('projectsAnswers.answerBlocklists.questions')->get()->pluck('projectsAnswers.*.answerBlocklists.*.questions.*.id')->collapse()->unique()->toArray();
+
+            return response()->json(['questionsanswered' => $questionsanswered, 'blocklist' => $blocklist]);
 
         } else {
         
