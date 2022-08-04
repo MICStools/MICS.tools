@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 //Route::view('/', 'welcome');
 Route::get('/', 'HomeController@index');
