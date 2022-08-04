@@ -59,31 +59,6 @@
         </div>
     </div> <!-- scoreboard -->
 
-    <svg width="0" height="0"> <!-- set up some styles for later -->
-        <style>
-            @font-face {
-                font-family: Halcom-Medium;
-                src: url("/css/Halcom-Medium.otf") format("opentype");
-            }
-
-            .unanswered { 
-                font: 300% Halcom-Medium,sans-serif; 
-                fill: #00f;
-                font-weight: lighter;
-                stroke: #{{ $currentdomain->primarycolour }};
-            }
-            .answered {
-                font: 250% Halcom-Medium,sans-serif; 
-                stroke: #0f0;
-                stroke-width: 10px;
-            }
-            .blocked { 
-                font: 250% Halcom-Medium,sans-serif; 
-                fill: #f00;
-            }
-        </style>
-    </svg>
-
     <div id="dotpathdiv">
         <object id="dotpath" type="image/svg+xml" data="{{ $currentdomain->background ? $currentdomain->background->getUrl() : '/defaultbackground.svg' }}"></object>
     </div>
@@ -123,6 +98,12 @@
                     delay: 1
                 });
 
+                // Put dotstatus from blade into js array
+                dotstatus = [];
+                @foreach($dotstatus as $status)
+                    dotstatus[{{ $loop->iteration-1 }}] = {{ $status }};
+                @endforeach
+
                 // Create the dots
                 for (var i = 0; i < dots; i++) {
                     point = path.getPointAtLength(spacebetweendots * (i+1));
@@ -152,15 +133,27 @@
                         element => {if (element.checked) answerarray.push(element.value)}
                     );
 
-                    // set colour based on if answered or not
-                    if (answerarray.length < 1) {
-                        circle.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
-                        label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
-                    } else {
-                        circle.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
-                        label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
-                    }
+                    // set colour based on if answered or not, or blocked
+                    switch (dotstatus[i]) {
+                            case 1: // answered
+                                //console.log('dotstatus: #'+(i+1)+' = answered');
+                                circle.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                                label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
+                                break;
+                            case -1: // blocked
+                                //console.log('dotstatus: #'+(i+1)+' = blocked');
+                                circle.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #9F2A2A; stroke-width: 5px; cursor: not-allowed;' );
+                                label.setAttributeNS(null, 'style', 'fill: #999; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
+                                break;
+                            default: // 0 = unanswered
+                                //console.log('dotstatus: #'+(i+1)+' = unanswered');
+                                circle.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                                label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
+                    } 
+                        
+                    
 
+                    // Append the dots and the labels
                     layer1.appendChild(circle);
                     layer1.appendChild(label);
                 }
@@ -188,19 +181,63 @@
                 // add click events to dots
                 dotpath.contentDocument.querySelectorAll('circle').forEach(item => {
                     item.addEventListener('click', (e) => {
-                        questionid = 'question-'+(Number(e.target.id.split('-')[1])+1);
-                        console.log('Qustion Id: '+questionid);
+                        questionnumber = Number(e.target.id.split('-')[1]); // zero indexed
+                        questionid = 'question-'+(questionnumber+1); // id of html element
+                        //console.log('Qustion Id: '+questionid);
                         hideallquestions();
-                        document.getElementById(questionid).style.visibility = 'visible';
+                        if (dotstatus[questionnumber] == -1) {
+                            //console.log('Question blocked');
+                        } else {
+                            document.getElementById(questionid).style.visibility = 'visible';
+                        }
                     })
                 })
 
             }, false);
 
             function hideallquestions() {
+                //console.log('hideallquestions');
                 document.querySelectorAll('.question').forEach(question => {
                     question.style.visibility = 'hidden';
                 }); 
+            }
+
+            function showpreviousquestion(currentid) {
+                //console.log('showpreviousquestion ' + currentid);
+                previousid = currentid -1;
+                found = false;
+                while (previousid >= 0 && !found) {
+                    if (dotstatus[previousid-1] == -1) { // correct for zero index
+                        // blocked, try the previous one
+                        //console.log('skipping ' + previousid);
+                        previousid--;
+                    } else {
+                        // answered or unanswered, so show the question
+                        previousquestionid = 'question-' + previousid;
+                        //console.log('Found '+ previousid);
+                        document.getElementById(previousquestionid).style.visibility = 'visible';
+                        found = true;
+                    }
+                } // falls off the beginning without showing any questions if all previous ones are blocked, which is OK behaviour 
+            }
+
+            function shownextquestion(currentid) {
+                //console.log('shownextquestion ' + currentid);
+                nextid = currentid +1;
+                found = false;
+                while (nextid < dotstatus.length && !found) {
+                    if (dotstatus[nextid-1] == -1) { // correct for zero index
+                        // blocked, try the next one
+                        //console.log('skipping ' + nextid);
+                        nextid++;
+                    } else {
+                        // answered or unanswered, so show the question
+                        nextquestionid = 'question-' + nextid;
+                        //console.log('Found '+ nextid);
+                        document.getElementById(nextquestionid).style.visibility = 'visible';
+                        found = true;
+                    }
+                } // falls off the end without showing any questions if all following ones are blocked, which is OK behaviour
             }
 
             function backtomap() {
@@ -216,10 +253,10 @@
                     element => {if (element.checked) answerarray.push(element.value)}
                 );
 
-                console.log('answerarray: '+answerarray);
+                //console.log('answerarray: '+answerarray);
 
                 ajaxurl = "/assessment/{{ $project->slug }}/answer/"+questionid;
-                console.log('ajaxurl: '+ajaxurl);
+                //console.log('ajaxurl: '+ajaxurl);
 
                 $.ajax({
                     type:'POST',
@@ -233,26 +270,36 @@
                         percentcomplete = Math.round(100 * numberquestionsanswered / numbertotalquestions);
                         document.getElementById('currentprogresstspan').textContent = percentcomplete;
                         strokeDasharray = "" + (1000 * (percentcomplete/100)) + "," + (1000 * (1-(percentcomplete/100)));
-                        console.log('strokeDasharray', strokeDasharray);
+                        //console.log('strokeDasharray', strokeDasharray);
                         document.getElementById('currentprogresscircle').setAttributeNS(null, 'stroke-dasharray', strokeDasharray);
+
+                        // Go through each dot and update based on dotstatus
+                        dotpath = document.getElementById('dotpath');
+                        alldots = dotpath.contentDocument.getElementsByClassName('dot');
+                        for (let i=0; i < alldots.length; i++) {
+                            dot = alldots[i];
+                            label = dot.nextElementSibling;
+                            dotstatus[i] = data['dotstatus'][i];
+                            switch (dotstatus[i]) {
+                                case 1: // answered
+                                    //console.log('dotstatus: #'+(i+1)+' = answered');
+                                    dot.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                                    label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
+                                    break;
+                                case -1: // blocked
+                                    //console.log('dotstatus: #'+(i+1)+' = blocked');
+                                    dot.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #9F2A2A; stroke-width: 5px; cursor: not-allowed;' );
+                                    label.setAttributeNS(null, 'style', 'fill: #999; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
+                                    break;
+                                default: // 0 = unanswered
+                                    //console.log('dotstatus: #'+(i+1)+' = unanswered');
+                                    dot.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
+                                    label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
+                            }
+                        }
                     }
                 });
 
-                // Update the dot colour if there are any answers - should probably just add/remove class
-                dotpath = document.getElementById('dotpath');
-                dotnameid = 'dot-'+(dotid-1);
-                dot = dotpath.contentDocument.getElementById(dotnameid);
-                label = dot.nextElementSibling;
-                console.log('Updating dot with id '+dotnameid);
-                if (answerarray.length < 1) { // unanswered
-                    dot.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
-                    label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
-                    console.log('unanswered');
-                } else { // answered
-                    dot.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
-                    label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
-                    console.log('answered');
-                }
             }
 
         </script>
@@ -294,12 +341,12 @@
                                     </ul>
                                     
                                     <div class="submitbuttons">
-                                        @if (false == $loop->first) <a href="javascript:void(0);" class=" nextquestion" onclick="hideallquestions(); answerdot({{ $loop->iteration }}, {{$question->id}}); document.getElementById('question-{{$loop->iteration - 1}}').style.visibility = 'visible';"><i class="fa fa-chevron-left"></i></a>@endif
+                                        @if (false == $loop->first) <a href="javascript:void(0);" class="previousquestion" onclick="hideallquestions(); answerdot({{ $loop->iteration }}, {{$question->id}}); showpreviousquestion({{ $loop->iteration }});"><i class="fa fa-chevron-left"></i></a>@endif
                                         <a href="javascript:void(0);" class="backtoroute" onclick="hideallquestions(); answerdot({{ $loop->iteration }}, {{$question->id}});"><i class="fa fa-times"></i></a>
                                         @if ($loop->last) 
                                             <a href="javascript:void(0);" class="return-to-map" onclick="hideallquestions(); answerdot({{ $loop->iteration }}, {{$question->id}}); backtomap();"><i class="fa fa-map-o" aria-hidden="true"></i></a>
                                         @else
-                                            <a href="javascript:void(0);" class=" nextquestion" onclick="hideallquestions(); answerdot({{ $loop->iteration }}, {{$question->id}}); document.getElementById('question-{{$loop->iteration + 1}}').style.visibility = 'visible';"><i class="fa fa-chevron-right"></i></a>
+                                            <a href="javascript:void(0);" class="nextquestion" onclick="hideallquestions(); answerdot({{ $loop->iteration }}, {{$question->id}}); shownextquestion({{ $loop->iteration }});"><i class="fa fa-chevron-right"></i></a>
                                         @endif
                                     </div>
 
@@ -340,15 +387,6 @@
                     <li><a class="return-to-project" href="/projects/{{ $project->slug }}"><i class="fa fa-undo" aria-hidden="true"></i> Return to project page</a></li>
                 </ul>
             </div><!-- returnnav -->
-
-            <!-- 
-                @if (in_array(26, $blocklist))
-                    26 is in blocklist: 
-                @endif
-                @foreach($blocklist as $blocker)
-                    {{ $blocker }}
-                @endforeach
-            -->
         
 </div><!-- container -->
 @endsection

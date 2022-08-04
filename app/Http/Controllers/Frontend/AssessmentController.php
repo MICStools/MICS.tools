@@ -52,7 +52,7 @@ class AssessmentController
         return view('frontend.domainmap',  compact('project', 'domains'));
     }
 
-
+    // Assessment "Game" screen
     public function show($project_slug, $domain_slug)
     {
         $project = Project::where('slug', $project_slug)->with(['projectsAnswers', 'user'])->first();
@@ -95,8 +95,26 @@ class AssessmentController
         // get blocked questions
         $blocklist = Project::where('id', $project->id)->with('projectsAnswers.answerBlocklists.questions')->get()->pluck('projectsAnswers.*.answerBlocklists.*.questions.*.id')->collapse()->unique()->toArray();
 
+        // Create dotstatus array: 0 for unanswered, 1 for answered and -1 for blocked
+        $dotstatus = [];
+        $blockedquestions = 0;
+        $allquestions = Domain::where('id', 1)->with(['domainQuestions'])->first()->domainQuestions;
+        $answeredquestions = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $currentdomain->id)->groupBy('question_id')->pluck('question_id')->toArray();
+        foreach ($allquestions as $question) { // All questions in this domain
+            if (in_array($question->id, $blocklist)) { // if it's in the blocklist array, set status to -1
+                $dotstatus[] = -1;
+                $blockedquestions++;
+            } elseif (in_array($question->id, $answeredquestions)) { // else if it's in the answered array, set status to 1
+                $dotstatus[] = 1;
+            } else { // else status is 0 for unsanswered
+                $dotstatus[] = 0;
+            }
+        }
+
+        $questionsanswered += $blockedquestions; // we count blocked questions as answered.
+
         if ($project && $project->user->id == Auth::user()->id) {
-            return view('frontend.assessment', compact('project', 'currentdomain', 'questionsanswered', 'domains', 'blocklist'));
+            return view('frontend.assessment', compact('project', 'currentdomain', 'questionsanswered', 'domains', 'blocklist', 'dotstatus'));
         } else {
             abort(403, "Sorry, this Project doesn't belong to you.");
         }
@@ -123,12 +141,31 @@ class AssessmentController
                 $project->projectsAnswers()->attach($input['answerarray']);
             }
 
-            $questionsanswered = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $domain_id)->groupBy('question_id')->pluck('question_id', 'question_id')->count();
-
             // get blocked questions
             $blocklist = Project::where('id', $project->id)->with('projectsAnswers.answerBlocklists.questions')->get()->pluck('projectsAnswers.*.answerBlocklists.*.questions.*.id')->collapse()->unique()->toArray();
 
-            return response()->json(['questionsanswered' => $questionsanswered, 'blocklist' => $blocklist]);
+            // Create dotstatus array: 0 for unanswered, 1 for answered and -1 for blocked
+            $dotstatus = [];
+            $blockedquestions = 0;
+            $allquestions = Domain::where('id', 1)->with(['domainQuestions'])->first()->domainQuestions;
+            $answeredquestions = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $domain_id)->groupBy('question_id')->pluck('question_id')->toArray();
+            foreach ($allquestions as $question) { // All questions in this domain
+                if (in_array($question->id, $blocklist)) { // if it's in the blocklist array, set status to -1
+                    $dotstatus[] = -1;
+                    $blockedquestions++;
+                } elseif (in_array($question->id, $answeredquestions)) { // else if it's in the answered array, set status to 1
+                    $dotstatus[] = 1;
+                } else { // else status is 0 for unsanswered
+                    $dotstatus[] = 0;
+                }
+            }
+
+            // Get the number count of questions answered for this domain for this project
+            $questionsanswered = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $domain_id)->groupBy('question_id')->pluck('question_id', 'question_id')->count();
+            // Add in blocked questions for this domain
+            $questionsanswered += $blockedquestions;
+
+            return response()->json(['questionsanswered' => $questionsanswered, 'dotstatus' => $dotstatus]);
 
         } else {
         
