@@ -20,17 +20,17 @@ class UpdateProjectRequest extends FormRequest
             'name' => [
                 'string',
                 'required',
-                'unique:projects,name,' . request()->route('project')->slug,
+                'unique:projects,name,' . request()->route('project')->id,
             ],
             'shortname' => [
                 'string',
                 'required',
-                'unique:projects,shortname,' . request()->route('project')->slug,
+                'unique:projects,shortname,' . request()->route('project')->id,
             ],
             'slug' => [
                 'string',
                 'required',
-                'unique:projects,slug,' . request()->route('project')->slug,
+                'unique:projects,slug,' . request()->route('project')->id,
             ],
             'user_id' => [
                 'required',
