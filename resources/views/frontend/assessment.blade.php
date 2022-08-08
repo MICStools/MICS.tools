@@ -136,17 +136,17 @@
                     // set colour based on if answered or not, or blocked
                     switch (dotstatus[i]) {
                             case 1: // answered
-                                //console.log('dotstatus: #'+(i+1)+' = answered');
+                                console.log('dotstatus: #'+(i+1)+' = answered');
                                 circle.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
                                 label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                                 break;
                             case -1: // blocked
-                                //console.log('dotstatus: #'+(i+1)+' = blocked');
+                                console.log('dotstatus: #'+(i+1)+' = blocked');
                                 circle.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #9F2A2A; stroke-width: 5px; cursor: not-allowed;' );
                                 label.setAttributeNS(null, 'style', 'fill: #999; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                                 break;
                             default: // 0 = unanswered
-                                //console.log('dotstatus: #'+(i+1)+' = unanswered');
+                                console.log('dotstatus: #'+(i+1)+' = unanswered');
                                 circle.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
                                 label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                     } 
@@ -183,10 +183,10 @@
                     item.addEventListener('click', (e) => {
                         questionnumber = Number(e.target.id.split('-')[1]); // zero indexed
                         questionid = 'question-'+(questionnumber+1); // id of html element
-                        //console.log('Qustion Id: '+questionid);
+                        console.log('Qustion Id: '+questionid);
                         hideallquestions();
                         if (dotstatus[questionnumber] == -1) {
-                            //console.log('Question blocked');
+                            console.log('Question blocked');
                         } else {
                             document.getElementById(questionid).style.visibility = 'visible';
                         }
@@ -196,25 +196,25 @@
             }, false);
 
             function hideallquestions() {
-                //console.log('hideallquestions');
+                console.log('hideallquestions');
                 document.querySelectorAll('.question').forEach(question => {
                     question.style.visibility = 'hidden';
                 }); 
             }
 
             function showpreviousquestion(currentid) {
-                //console.log('showpreviousquestion ' + currentid);
+                console.log('showpreviousquestion ' + currentid);
                 previousid = currentid -1;
                 found = false;
                 while (previousid >= 0 && !found) {
                     if (dotstatus[previousid-1] == -1) { // correct for zero index
                         // blocked, try the previous one
-                        //console.log('skipping ' + previousid);
+                        console.log('skipping ' + previousid);
                         previousid--;
                     } else {
                         // answered or unanswered, so show the question
                         previousquestionid = 'question-' + previousid;
-                        //console.log('Found '+ previousid);
+                        console.log('Found '+ previousid);
                         document.getElementById(previousquestionid).style.visibility = 'visible';
                         found = true;
                     }
@@ -222,18 +222,18 @@
             }
 
             function shownextquestion(currentid) {
-                //console.log('shownextquestion ' + currentid);
+                console.log('shownextquestion ' + currentid);
                 nextid = currentid +1;
                 found = false;
                 while (nextid < dotstatus.length && !found) {
                     if (dotstatus[nextid-1] == -1) { // correct for zero index
                         // blocked, try the next one
-                        //console.log('skipping ' + nextid);
+                        console.log('skipping ' + nextid);
                         nextid++;
                     } else {
                         // answered or unanswered, so show the question
                         nextquestionid = 'question-' + nextid;
-                        //console.log('Found '+ nextid);
+                        console.log('Found '+ nextid);
                         document.getElementById(nextquestionid).style.visibility = 'visible';
                         found = true;
                     }
@@ -253,10 +253,10 @@
                     element => {if (element.checked) answerarray.push(element.value)}
                 );
 
-                //console.log('answerarray: '+answerarray);
+                console.log('answerarray: '+answerarray);
 
                 ajaxurl = "/assessment/{{ $project->slug }}/answer/"+questionid;
-                //console.log('ajaxurl: '+ajaxurl);
+                console.log('ajaxurl: '+ajaxurl);
 
                 $.ajax({
                     type:'POST',
@@ -270,7 +270,7 @@
                         percentcomplete = Math.round(100 * numberquestionsanswered / numbertotalquestions);
                         document.getElementById('currentprogresstspan').textContent = percentcomplete;
                         strokeDasharray = "" + (1000 * (percentcomplete/100)) + "," + (1000 * (1-(percentcomplete/100)));
-                        //console.log('strokeDasharray', strokeDasharray);
+                        console.log('strokeDasharray', strokeDasharray);
                         document.getElementById('currentprogresscircle').setAttributeNS(null, 'stroke-dasharray', strokeDasharray);
 
                         // Go through each dot and update based on dotstatus
@@ -282,17 +282,17 @@
                             dotstatus[i] = data['dotstatus'][i];
                             switch (dotstatus[i]) {
                                 case 1: // answered
-                                    //console.log('dotstatus: #'+(i+1)+' = answered');
+                                    console.log('dotstatus: #'+(i+1)+' = answered');
                                     dot.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
                                     label.setAttributeNS(null, 'style', 'fill: #ededed; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                                     break;
                                 case -1: // blocked
-                                    //console.log('dotstatus: #'+(i+1)+' = blocked');
+                                    console.log('dotstatus: #'+(i+1)+' = blocked');
                                     dot.setAttributeNS(null, 'style', 'fill: #{{ $currentdomain->primarycolour }}; stroke: #9F2A2A; stroke-width: 5px; cursor: not-allowed;' );
                                     label.setAttributeNS(null, 'style', 'fill: #999; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                                     break;
                                 default: // 0 = unanswered
-                                    //console.log('dotstatus: #'+(i+1)+' = unanswered');
+                                    console.log('dotstatus: #'+(i+1)+' = unanswered');
                                     dot.setAttributeNS(null, 'style', 'fill: #ededed; stroke: #{{ $currentdomain->primarycolour }}; stroke-width: 5px; cursor: pointer;' );
                                     label.setAttributeNS(null, 'style', 'fill: #000; font-size: 36px; font-family: Halcom-Medium; pointer-events: none;' );
                             }
