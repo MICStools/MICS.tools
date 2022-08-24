@@ -98,7 +98,7 @@ class AssessmentController
         // Create dotstatus array: 0 for unanswered, 1 for answered and -1 for blocked
         $dotstatus = [];
         $blockedquestions = 0;
-        $allquestions = Domain::where('id', 1)->with(['domainQuestions'])->first()->domainQuestions;
+        $allquestions = Domain::where('id', $currentdomain->id)->with(['domainQuestions'])->first()->domainQuestions;
         $answeredquestions = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $currentdomain->id)->groupBy('question_id')->pluck('question_id')->toArray();
         foreach ($allquestions as $question) { // All questions in this domain
             if (in_array($question->id, $blocklist)) { // if it's in the blocklist array, set status to -1
@@ -147,7 +147,7 @@ class AssessmentController
             // Create dotstatus array: 0 for unanswered, 1 for answered and -1 for blocked
             $dotstatus = [];
             $blockedquestions = 0;
-            $allquestions = Domain::where('id', 1)->with(['domainQuestions'])->first()->domainQuestions;
+            $allquestions = Domain::where('id', $domain_id)->with(['domainQuestions'])->first()->domainQuestions;
             $answeredquestions = $project->projectsAnswers()->whereRelation('question', 'domain_id', '=', $domain_id)->groupBy('question_id')->pluck('question_id')->toArray();
             foreach ($allquestions as $question) { // All questions in this domain
                 if (in_array($question->id, $blocklist)) { // if it's in the blocklist array, set status to -1
