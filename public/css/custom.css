@@ -962,6 +962,8 @@ a:return-to-map {
     transform: rotate(180deg);
     text-align: center;
     vertical-align: middle;
+    width: 1.5em;
+    display: inline-block;
 }
 
 .betaflag {

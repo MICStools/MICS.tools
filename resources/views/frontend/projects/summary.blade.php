@@ -106,7 +106,7 @@
 
                     @if ($domain->recommendations->count() > 0)
                         <tr>
-                            <th rowspan="{{ $domain->recommendations->count() }}" class="{{ $domain->slug }}"><span class="verticaltext">{{ $domain->name }}</span></th>
+                            <th rowspan="{{ $domain->recommendations->count() }}" class="{{ $domain->slug }}"><span class="verticaltext">{{ ucfirst($domain->slug) }}</span></th>
 
                         @foreach ($domain->recommendations as $recommendation)
                             
@@ -141,7 +141,7 @@
 
                     @if ($domain->recommendations->count() > 0)
                         <tr>
-                            <th rowspan="{{ $domain->recommendations->count() }}" class="{{ $domain->slug }}"><span class="verticaltext">{{ $domain->name }}</span></th>
+                            <th rowspan="{{ $domain->recommendations->count() }}" class="{{ $domain->slug }}"><span class="verticaltext">{{ ucfirst($domain->slug) }}</span></th>
 
                         @foreach ($domain->recommendations as $recommendation)
                             
