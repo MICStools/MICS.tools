@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyProjectRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Country;
 use App\Models\Project;
 use App\Models\Topic;
@@ -118,6 +119,7 @@ class ProjectsController extends Controller
                     $indicator_id = $indicator['id'];
                     $score = Answer::whereRelation('projects', 'id', $project->id)->whereHas('question.recommendations', function ($query) use($indicator_id) {$query->where('id', $indicator_id); })->sum('weight');
                     $indicator['score'] = $score;
+                    $indicator['average'] = Cache::get($indicator_id, 0);
                 }
             
         }

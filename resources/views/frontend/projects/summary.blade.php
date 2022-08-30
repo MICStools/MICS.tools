@@ -115,7 +115,7 @@
                             @endif
                             <td class="{{ $domain->slug }}">{{ $recommendation->label }}</td>
                             <td class="recommendationscore">{{ $recommendation->score }}</td>
-                            <td class="recommendationaverage">{{ random_int(0, 43) }}</td>
+                            <td class="recommendationaverage">{{ $recommendation->average }}</td>
                         </tr>
                             
                         @endforeach
