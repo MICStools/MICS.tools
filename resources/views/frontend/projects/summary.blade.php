@@ -98,7 +98,7 @@
             <thead>
                 <th colspan="2">Impact Indicators</th>
                 <th>Impact score <span>(max 42)</span></th>
-                <th>Overall average</th>
+                <th>Average score (of projects on platform)</th>
             </thead>
             <tbody>
 
