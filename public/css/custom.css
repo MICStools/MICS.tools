@@ -237,6 +237,11 @@ hr {
     list-style-type: none;
 }
 
+    .questions helpbox ul,
+    .questions infobox ul {
+        list-style-type: disc;
+    }
+
 .questions input {
     display: inline-block;
     margin-right: -2em;
