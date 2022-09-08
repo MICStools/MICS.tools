@@ -237,8 +237,8 @@ hr {
     list-style-type: none;
 }
 
-    .questions helpbox ul,
-    .questions infobox ul {
+    .questions .helpbox ul,
+    .questions .infobox ul {
         list-style-type: disc;
     }
 
