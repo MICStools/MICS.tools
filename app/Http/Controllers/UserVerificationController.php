@@ -15,12 +15,12 @@ class UserVerificationController extends Controller
         abort_if(!$user, 404);
 
         $user->verified           = 1;
-        $user->verified_at        = Carbon::now()->format(config('panel.date_format') . ' ' . config('panel.time_format'));
+        $user->verified_at        = Carbon::now()->format('Y-m-d H:i:s');  //->format(config('panel.date_format') . ' ' . config('panel.time_format'));
         $user->verification_token = null;
         $user->save();
 
         // make them a User if they're not already
-        //$user->roles()->syncWithoutDetaching(2);
+        $user->roles()->syncWithoutDetaching(2);
 
         return redirect()->route('login')->with('message', trans('global.emailVerificationSuccess'));
     }
