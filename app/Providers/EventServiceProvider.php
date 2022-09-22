@@ -22,9 +22,9 @@ class EventServiceProvider extends ServiceProvider
             // ... other providers
             \SocialiteProviders\Microsoft\MicrosoftExtendSocialite::class.'@handle',
         ],
-        /* Verified::class => [
-            LogVerifiedUser::class,
-        ], */
+        Verified::class => [
+            AddUserRole::class,
+        ],
     ];
 
     /**

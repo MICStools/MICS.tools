@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use App\Models\User;
 
 class VerificationController extends Controller
 {
@@ -43,6 +44,7 @@ class VerificationController extends Controller
     public function verified(Request $request)
     {
         // make them a User if they're not already
-        $request->user()->roles()->syncWithoutDetaching(2);
+        $user = User::find($request->route('id'));
+        $user()->roles()->syncWithoutDetaching(2);
     }
 }
