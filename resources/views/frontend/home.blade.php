@@ -8,6 +8,7 @@
                 <ul>
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="https://about.mics.tools">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://about.mics.tools/guidance">Impact guidance</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#projects">Project catalogue</a></li>
                 
                 @guest
