@@ -112,7 +112,7 @@
                         
                         <div class="col-6 currentprojectimpact">
                             <h5 class="p-1 mt-3">Current Project Impact</h5>
-                            <p class="p-1">Scores are recalulated and updated when “View impact report” is clicked.</p>
+                            <p class="p-1">The following scores were calculated using a statistically-driven machine-learning approach, a type of AI that learns to perform a task by analysing patterns in data. This is an experimental approach to citizen-science impact assessment, and the exact reasoning behind the scores is not explainable. The scores represent a best guess of the impact the project is having in each domain. Scores are recalculated and updated when “View impact report” is clicked.</p>
                             
                             <div class="col-12 pt-6 mt-4 d-flex justify-content-between">
                                 <svg width="0" height="0">
