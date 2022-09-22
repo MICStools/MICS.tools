@@ -39,4 +39,10 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+
+    public function verified(Request $request)
+    {
+        // make them a User if they're not already
+        $request->user()->roles()->syncWithoutDetaching(2);
+    }
 }
