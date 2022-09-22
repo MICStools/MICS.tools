@@ -20,7 +20,7 @@ class UserVerificationController extends Controller
         $user->save();
 
         // make them a User if they're not already
-        $user->roles()->syncWithoutDetaching(2);
+        //$user->roles()->syncWithoutDetaching(2);
 
         return redirect()->route('login')->with('message', trans('global.emailVerificationSuccess'));
     }
