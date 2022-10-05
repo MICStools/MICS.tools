@@ -16,7 +16,14 @@ class UpdateProjectRequest extends FormRequest
 
     public function rules()
     {
+        //ddd(request());
         return [
+            'slug' => [
+                'string',
+                'required',
+                'unique:projects,slug,' . request()->route('project')->id,
+            ],
+
             'name' => [
                 'string',
                 'required',
@@ -25,13 +32,9 @@ class UpdateProjectRequest extends FormRequest
             'shortname' => [
                 'string',
                 'required',
-                'unique:projects,shortname,' . request()->route('project')->id,
+                'unique:projects,shortname,' . request()->route('project')->id, // request()->route('projects') . ",slug", 
             ],
-            'slug' => [
-                'string',
-                'required',
-                'unique:projects,slug,' . request()->route('project')->id,
-            ],
+            
             'user_id' => [
                 'required',
                 'integer',

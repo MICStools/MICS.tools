@@ -157,19 +157,19 @@
                                         </td>
                                         <td>
                                             @can('project_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.projects.show', $project->id) }}">
+                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.projects.show', $project->slug) }}">
                                                     {{ trans('global.view') }}
                                                 </a>
                                             @endcan
 
                                             @can('project_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('admin.projects.edit', $project->id) }}">
+                                                <a class="btn btn-xs btn-info" href="{{ route('admin.projects.edit', $project->slug) }}">
                                                     {{ trans('global.edit') }}
                                                 </a>
                                             @endcan
 
                                             @can('project_delete')
-                                                <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                <form action="{{ route('admin.projects.destroy', $project->slug) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

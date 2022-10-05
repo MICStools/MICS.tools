@@ -82,13 +82,14 @@ class ProjectsController extends Controller
 
         $topics = Topic::pluck('name','id');
 
-        //$project->load('user', 'organisers', 'topics', 'created_by');
+        $project->load('user', 'organisers', 'topics', 'created_by');
 
         return view('frontend.projects.edit', compact('users', 'organisers', 'topics', 'project'));
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        //ddd($request);
         $project->update($request->all());
         $project->organisers()->sync($request->input('organisers', []));
         $project->topics()->sync($request->input('topics', []));

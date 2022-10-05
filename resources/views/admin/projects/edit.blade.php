@@ -9,7 +9,7 @@
                     {{ trans('global.edit') }} {{ trans('cruds.project.title_singular') }}
                 </div>
                 <div class="panel-body">
-                    <form method="POST" action="{{ route("admin.projects.update", [$project->id]) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route("admin.projects.update", [$project->slug]) }}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -237,7 +237,7 @@
                 // Send request
                 var data = new FormData();
                 data.append('upload', file);
-                data.append('crud_id', '{{ $project->id ?? 0 }}');
+                data.append('crud_id', '{{ $project->slug ?? 0 }}');
                 xhr.send(data);
               });
             })

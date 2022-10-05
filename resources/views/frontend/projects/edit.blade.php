@@ -10,9 +10,10 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route("frontend.projects.update", [$project->id]) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route("frontend.projects.update", [$project->slug]) }}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
+                        <input id="id" name="id" type="hidden" value="{{ $project->id }}">
                         <div class="form-group">
                             <label class="required" for="name">{{ trans('cruds.project.fields.name') }}</label>
                             <input class="form-control" type="text" name="name" id="name" value="{{ old('name', $project->name) }}" required>

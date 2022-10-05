@@ -146,10 +146,11 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::delete('projects/destroy', 'ProjectsController@massDestroy')->name('projects.massDestroy');
     Route::post('projects/media', 'ProjectsController@storeMedia')->name('projects.storeMedia');
     Route::post('projects/ckmedia', 'ProjectsController@storeCKEditorImages')->name('projects.storeCKEditorImages');
-    Route::resource('projects', 'ProjectsController')->parameters([
+    Route::resource('projects', 'ProjectsController');
+    /* ->parameters([
         'projects' => 'projects:slug',
     ]);
-
+ */
     // Answers
     Route::delete('answers/destroy', 'AnswersController@massDestroy')->name('answers.massDestroy');
     Route::resource('answers', 'AnswersController');
