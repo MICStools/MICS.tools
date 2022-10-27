@@ -6,7 +6,7 @@
         <div class="col-12" style="padding: 1em; background: var(--mics-navy); color: white; position: relative; overflow: hidden;">
             <h1><img style="width: 1.6ex; display: inline-block;" id="projectlogo" src="{{ $project->logo ? $project->logo->getUrl('thumb') : '/css/defaultlogo.png' }}" alt="" /> {{ $project->shortname }} impact summary</h1>
             <p>This is an impact report of the citizen science project {{ $project->name }}. The scores displayed summarise the results of the assessment process designed by the MICS project. For more information on how they were calculated, visit <a href="/">{{ request()->getSchemeAndHttpHost(); }}</a></p>
-            <span class="betaflag">Beta</span>
+            {{-- <span class="betaflag">Beta</span> --}}
         </div>
     </div>
     <div class="row mt-2">
