@@ -198,7 +198,7 @@
                         
                         <div class="col-4">
                             <h5 class="p-2 mt-2">Domain Progress</h5>
-                            <p>Proportion of questions answered in each domain.</p>
+                            <p class="p-2">Proportion of questions answered in each domain.</p>
                             
                             <svg width="0" height="0">
                                 <style>
