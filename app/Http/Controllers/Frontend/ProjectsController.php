@@ -31,7 +31,7 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::with(['user', 'organisers', 'topics', 'created_by', 'media'])->get();
+        $projects = Project::with(['user', 'organisers', 'participants', 'observers', 'topics', 'created_by', 'media'])->get();
 
         return view('frontend.projects.index', compact('projects'));
     }
@@ -43,16 +43,20 @@ class ProjectsController extends Controller
         $users = User::where('id', Auth::id())->pluck('name', 'id'); //User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $organisers = Country::pluck('name', 'id');
+        $participants = Country::pluck('name', 'id');
+        $observers = Country::pluck('name', 'id');
 
         $topics = Topic::all()->pluck('name', 'id');
 
-        return view('frontend.projects.create', compact('users', 'organisers', 'topics'));
+        return view('frontend.projects.create', compact('users', 'organisers', 'participants', 'observers', 'topics'));
     }
 
     public function store(StoreProjectRequest $request)
     {
         $project = Project::create($request->all());
         $project->organisers()->sync($request->input('organisers', []));
+        $project->participants()->sync($request->input('participants', []));
+        $project->observers()->sync($request->input('observers', []));
         if ($request->input('logo', false)) {
             $project->addMedia(storage_path('tmp/uploads/' . basename($request->input('logo'))))->toMediaCollection('logo');
         }
@@ -72,19 +76,21 @@ class ProjectsController extends Controller
 
     public function edit($project_slug)
     {
-        $project = Project::where('slug', $project_slug)->with(['user', 'organisers', 'created_by', 'topics'])->first();
+        $project = Project::where('slug', $project_slug)->with(['user', 'organisers', 'participants', 'observers', 'created_by', 'topics'])->first();
 
         abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $organisers = Country::pluck('name', 'id');
+        $participants = Country::pluck('name', 'id');
+        $observers = Country::pluck('name', 'id');
 
         $topics = Topic::pluck('name','id');
 
-        $project->load('user', 'organisers', 'topics', 'created_by');
+        $project->load('user', 'organisers', 'participants', 'observers', 'topics', 'created_by');
 
-        return view('frontend.projects.edit', compact('users', 'organisers', 'topics', 'project'));
+        return view('frontend.projects.edit', compact('users', 'organisers', 'participants', 'observers', 'topics', 'project'));
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
@@ -92,6 +98,8 @@ class ProjectsController extends Controller
         //ddd($request);
         $project->update($request->all());
         $project->organisers()->sync($request->input('organisers', []));
+        $project->participants()->sync($request->input('participants', []));
+        $project->observers()->sync($request->input('observers', []));
         $project->topics()->sync($request->input('topics', []));
         if ($request->input('logo', false)) {
             if (!$project->logo || $request->input('logo') !== $project->logo->file_name) {

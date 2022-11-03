@@ -137,6 +137,16 @@ class Project extends Model implements HasMedia
         return $this->belongsToMany(Country::class, 'country_project');
     }
 
+    public function participants()
+    {
+        return $this->belongsToMany(Country::class, 'country_project_participant');
+    }
+
+    public function observers()
+    {
+        return $this->belongsToMany(Country::class, 'country_project_observer');
+    }
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by_id');

@@ -178,6 +178,41 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.project.fields.organisers_helper') }}</span>
                         </div>
+
+                        <div class="form-group {{ $errors->has('participants') ? 'has-error' : '' }}">
+                            <label for="participants">{{ trans('cruds.project.fields.participants') }}</label>
+                            <div style="padding-bottom: 4px">
+                                <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
+                                <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
+                            </div>
+                            <select class="form-control select2" name="participants[]" id="participants" multiple>
+                                @foreach($participants as $id => $participant)
+                                    <option value="{{ $id }}" {{ (in_array($id, old('participants', [])) || $project->participants->contains($id)) ? 'selected' : '' }}>{{ $participant }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('participants'))
+                                <span class="help-block" role="alert">{{ $errors->first('participants') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.project.fields.participants_helper') }}</span>
+                        </div>
+
+                        <div class="form-group {{ $errors->has('observers') ? 'has-error' : '' }}">
+                            <label for="observers">{{ trans('cruds.project.fields.observers') }}</label>
+                            <div style="padding-bottom: 4px">
+                                <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
+                                <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
+                            </div>
+                            <select class="form-control select2" name="observers[]" id="observers" multiple>
+                                @foreach($observers as $id => $observer)
+                                    <option value="{{ $id }}" {{ (in_array($id, old('observers', [])) || $project->observers->contains($id)) ? 'selected' : '' }}>{{ $observer }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('observers'))
+                                <span class="help-block" role="alert">{{ $errors->first('observers') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.project.fields.observers_helper') }}</span>
+                        </div>
+
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">
                                 {{ trans('global.save') }}

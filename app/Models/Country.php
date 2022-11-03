@@ -30,7 +30,17 @@ class Country extends Model
 
     public function organisersProjects()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Project::class, 'country_project');
+    }
+
+    public function participantsProjects()
+    {
+        return $this->belongsToMany(Project::class, 'country_project_participant');
+    }
+
+    public function observersProjects()
+    {
+        return $this->belongsToMany(Project::class, 'country_project_observer');
     }
 
     protected function serializeDate(DateTimeInterface $date)
