@@ -136,21 +136,23 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.project.fields.contactdetails_helper') }}</span>
                         </div>
-                        <div class="form-group {{ $errors->has('cost') ? 'has-error' : '' }}">
-                            <label for="cost">{{ trans('cruds.project.fields.cost') }}</label>
-                            <input class="form-control" type="number" name="cost" id="cost" value="{{ old('cost', $project->cost) }}" step="0.01">
+                        <div class="form-group">
+                            <label for="cost">{{ trans('cruds.project.fields.cost') }} <span class="help-block">{{ trans('cruds.project.fields.cost_helper') }}</span></label>
+                            <input class="form-control" type="text" name="cost" id="cost" value="{{ old('cost', $project->cost) }}">
                             @if($errors->has('cost'))
-                                <span class="help-block" role="alert">{{ $errors->first('cost') }}</span>
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('cost') }}
+                                </div>
                             @endif
-                            <span class="help-block">{{ trans('cruds.project.fields.cost_helper') }}</span>
                         </div>
-                        <div class="form-group {{ $errors->has('funding') ? 'has-error' : '' }}">
-                            <label for="funding">{{ trans('cruds.project.fields.funding') }}</label>
-                            <input class="form-control" type="number" name="funding" id="funding" value="{{ old('funding', $project->funding) }}" step="0.01">
+                        <div class="form-group">
+                            <label for="funding">{{ trans('cruds.project.fields.funding') }} <span class="help-block">{{ trans('cruds.project.fields.funding_helper') }}</span></label>
+                            <input class="form-control" type="text" name="funding" id="funding" value="{{ old('funding', $project->funding) }}">
                             @if($errors->has('funding'))
-                                <span class="help-block" role="alert">{{ $errors->first('funding') }}</span>
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('funding') }}
+                                </div>
                             @endif
-                            <span class="help-block">{{ trans('cruds.project.fields.funding_helper') }}</span>
                         </div>
                         <div class="form-group {{ $errors->has('uri') ? 'has-error' : '' }}">
                             <label for="uri">{{ trans('cruds.project.fields.uri') }}</label>
