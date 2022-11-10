@@ -1127,3 +1127,41 @@ td.recommendationscore {
         display: inline-block;
         vertical-align: text-top;
     }
+
+#mapnav {
+    text-align: center;
+}
+
+#mapnav input {
+    display: none;
+}
+
+#mapnav label {
+    cursor: pointer;
+    padding: 1ex 2em;
+    font-weight: normal;
+    display: inline-block;
+    width: 25%;
+    color: var(--mics-offwhite);
+}
+
+#mapnav input:checked+label {
+    font-weight: bold;
+    color: #84ade9;
+}
+
+.mapregion {
+    width: 650px; height: 440px; position: absolute; top: 40px; 
+}
+
+#organisers:checked ~ #regions_div1 {
+    z-index: 4;
+}
+
+#participants:checked ~ #regions_div2 {
+    z-index: 4;
+}
+
+#observers:checked ~ #regions_div3 {
+    z-index: 4;
+}

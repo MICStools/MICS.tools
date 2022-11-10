@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row mt-2">
-        <div class="col-7 p-0" style="background: #535364; border-right: 10px solid var(--mics-offwhite);">
+        <div class="col-7 p-0" style="background: #535364; border-right: 10px solid var(--mics-offwhite); height: 480px; overflow: hidden;">
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <script type="text/javascript">
         
@@ -20,8 +20,16 @@
               google.charts.setOnLoadCallback(drawRegionsMap);
 
                 function drawRegionsMap() {
-                    var data = google.visualization.arrayToDataTable([
+                    var data1 = google.visualization.arrayToDataTable([
                         {!! $organisersstring !!}
+                    ]);
+
+                    var data2 = google.visualization.arrayToDataTable([
+                        {!! $participantsstring !!}
+                    ]);
+
+                    var data3 = google.visualization.arrayToDataTable([
+                        {!! $observersstring !!}
                     ]);
 
                     var options = {
@@ -31,13 +39,33 @@
                         region: 'auto'
                     };
 
-                    var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+                    var chart1 = new google.visualization.GeoChart(document.getElementById('regions_div1'));
+                    var chart2 = new google.visualization.GeoChart(document.getElementById('regions_div2'));
+                    var chart3 = new google.visualization.GeoChart(document.getElementById('regions_div3'));
 
-                    chart.draw(data, options);
+                    chart1.draw(data1, options);
+                    chart2.draw(data2, options);
+                    chart3.draw(data3, options);
                 }
 
-            </script>
-            <div id="regions_div" style="width: 650px; height: 440px;"></div>
+            </script>            
+
+            <fieldset id="mapnav" style="position: relative;">
+
+                <input type="radio" id="organisers" name="mapchoice" value="organisers" checked>
+                <label for="organisers">Organisers</label>
+
+                <input type="radio" id="participants" name="mapchoice" value="participants">
+                <label for="participants">Participants</label>
+
+                <input type="radio" id="observers" name="mapchoice" value="observers">
+                <label for="observers">Observations</label>
+                <div class="mapregion" id="regions_div3"></div>
+                <div class="mapregion" id="regions_div2"></div>
+                <div class="mapregion" id="regions_div1"></div>
+
+            </fieldset>
+
         </div>
         <div class="col-5 p-0" style="background: var(--mics-navy);">
             <h2 style="padding: 1ex 1em; color: white;">Project Information</h2>

@@ -81,6 +81,9 @@ class ProjectsController extends Controller
             return abort(404);
         }
 
+        // Run the Octave neural net, which saves the Results to the Results table
+        Artisan::call('octave:run', ['project_id' => $project->id]);
+
         $domains = Domain::withCount(['domainQuestions'])->get();
 
         // Get the number of questions answered for each domain
@@ -95,19 +98,32 @@ class ProjectsController extends Controller
             $totalprogress += $domain['percentanswered'];
         }
         $totalprogress = round($totalprogress / 6); # Find the average percentage from the 6 domains
-
-        // Run the Octave neural net, which saves the Results to the Results table
-        Artisan::call('octave:run', ['project_id' => $project->id]);
         
         // Now get the rest of the data 
 
-        // Prepare data for Google GeoChart to display the map on the Front End in JS
+        // Prepare data for Google GeoChart to display the map on the Front End in JS:
+
+        // 1 Organisers
         $organisers = $project->organisers()->pluck('short_code')->toArray();
         $organisersstring = "['country'],";
         foreach ($organisers as $organiser) {
             $organisersstring .= '[\''.strtoupper($organiser).'\'],';
         }
-        //ddd($organisersstring);
+
+        // 2 Participants
+        $participants = $project->participants()->pluck('short_code')->toArray();
+        $participantsstring = "['country'],";
+        foreach ($participants as $participant) {
+            $participantsstring .= '[\''.strtoupper($participant).'\'],';
+        }
+
+        // 3 Observers
+        $observers = $project->observers()->pluck('short_code')->toArray();
+        $observersstring = "['country'],";
+        foreach ($observers as $observer) {
+            $observersstring .= '[\''.strtoupper($observer).'\'],';
+        }
+        
         
         // Get Recommendations that are Impact Indicators for each Domain
         $domainIndicators = Domain::with(['recommendations' => function ($query) { $query->where('indicator', 1); }])->orderBy('order')->get();
@@ -121,11 +137,8 @@ class ProjectsController extends Controller
                     $indicator['score'] = $score;
                     $indicator['average'] = Cache::get($indicator_id, 0);
                 }
-            
+    
         }
-
-        // Get the cached averages and calculate difference (updated at midnight each day)
-        // TO DO
 
         // Get the other Recommendations that aren't Impact Indicators for each Domain
         $domainRecommendations = Domain::with(['recommendations' => function ($query) { $query->where('indicator', 0); }])->orderBy('order')->get();
@@ -160,7 +173,7 @@ class ProjectsController extends Controller
         // Calculate the average for in the middle of the pie chart
         $average = round(42 * ($totalscore / (42*5)));
 
-        return view('frontend.projects.summary', compact('project', 'results', 'domainRecommendations', 'domainIndicators', 'organisersstring', 'average', 'totalprogress'));
+        return view('frontend.projects.summary', compact('project', 'results', 'domainRecommendations', 'domainIndicators', 'organisersstring', 'participantsstring', 'observersstring', 'average', 'totalprogress'));
     }
 
 }
