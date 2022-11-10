@@ -14,6 +14,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    <a href="/">Go to frontend</a>
                 </div>
                 
             </div>
