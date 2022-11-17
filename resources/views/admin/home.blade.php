@@ -13,7 +13,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('You are logged in as Admin!') }}
 
                     <a href="/">Go to frontend</a>
                 </div>

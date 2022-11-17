@@ -88,12 +88,12 @@
 
                 @if ($project->cost && 0 < $project->cost)
                     <dt>Project cost:</dt>
-                    <dd>{{ number_format($project->cost, 2) }}</dd>
+                    <dd>{{ $project->cost }}</dd>
                 @endif
 
                 @if ($project->funding && 0 < $project->funding)
                     <dt>Funding amount:</dt>
-                    <dd>{{ number_format($project->funding, 2) }}</dd>
+                    <dd>{{ $project->funding }}</dd>
                 @endif
 
                 @if ($project->uri)

@@ -103,25 +103,392 @@ class ProjectsController extends Controller
 
         // Prepare data for Google GeoChart to display the map on the Front End in JS:
 
+        $caf = "['DZ'],
+                ['AO'],
+                ['BJ'],
+                ['BW'],
+                ['BF'],
+                ['BI'],
+                ['CM'],
+                ['CV'],
+                ['CF'],
+                ['TD'],
+                ['KM'],
+                ['CD'],
+                ['CG'],
+                ['CI'],
+                ['DJ'],
+                ['EG'],
+                ['GQ'],
+                ['ER'],
+                ['ET'],
+                ['GA'],
+                ['GM'],
+                ['GH'],
+                ['GN'],
+                ['GW'],
+                ['KE'],
+                ['LS'],
+                ['LR'],
+                ['LY'],
+                ['MG'],
+                ['MW'],
+                ['ML'],
+                ['MR'],
+                ['MU'],
+                ['YT'],
+                ['MA'],
+                ['MZ'],
+                ['NA'],
+                ['NE'],
+                ['NG'],
+                ['RE'],
+                ['RW'],
+                ['SH'],
+                ['ST'],
+                ['SN'],
+                ['SC'],
+                ['SL'],
+                ['SO'],
+                ['ZA'],
+                ['SS'],
+                ['SD'],
+                ['SZ'],
+                ['TZ'],
+                ['TG'],
+                ['TN'],
+                ['UG'],
+                ['EH'],
+                ['ZM'],
+                ['ZW'],";
+        
+        $cna = "['AI'],
+                ['AG'],
+                ['AW'],
+                ['BS'],
+                ['BB'],
+                ['BZ'],
+                ['BM'],
+                ['BQ'],
+                ['VG'],
+                ['CA'],
+                ['KY'],
+                ['CR'],
+                ['CU'],
+                ['CW'],
+                ['DM'],
+                ['DO'],
+                ['SV'],
+                ['GL'],
+                ['GD'],
+                ['GP'],
+                ['GT'],
+                ['HT'],
+                ['HN'],
+                ['JM'],
+                ['MQ'],
+                ['MX'],
+                ['MS'],
+                ['NI'],
+                ['PA'],
+                ['PR'],
+                ['BL'],
+                ['KN'],
+                ['LC'],
+                ['MF'],
+                ['PM'],
+                ['VC'],
+                ['SX'],
+                ['TT'],
+                ['TC'],
+                ['US'],
+                ['VI'],";
+
+        $coc = "['AS'],
+                ['AU'],
+                ['CK'],
+                ['FJ'],
+                ['PF'],
+                ['GU'],
+                ['KI'],
+                ['MH'],
+                ['FM'],
+                ['NR'],
+                ['NC'],
+                ['NZ'],
+                ['NU'],
+                ['NF'],
+                ['MP'],
+                ['PW'],
+                ['PG'],
+                ['PN'],
+                ['WS'],
+                ['SB'],
+                ['TK'],
+                ['TO'],
+                ['TV'],
+                ['UM'],
+                ['VU'],
+                ['WF'],";
+
+        $can = "['AQ'],
+                ['BV'],
+                ['TF'],
+                ['HM'],
+                ['GS'],";
+
+        $cas = "['AF'],
+                ['AM'],
+                ['AZ'],
+                ['BH'],
+                ['BD'],
+                ['BT'],
+                ['IO'],
+                ['BN'],
+                ['KH'],
+                ['CN'],
+                ['CX'],
+                ['CC'],
+                ['CY'],
+                ['GE'],
+                ['HK'],
+                ['IN'],
+                ['ID'],
+                ['IR'],
+                ['IQ'],
+                ['IL'],
+                ['JP'],
+                ['JO'],
+                ['KZ'],
+                ['KP'],
+                ['KR'],
+                ['KW'],
+                ['KG'],
+                ['LA'],
+                ['LB'],
+                ['MO'],
+                ['MY'],
+                ['MV'],
+                ['MN'],
+                ['MM'],
+                ['NP'],
+                ['OM'],
+                ['PK'],
+                ['PS'],
+                ['PH'],
+                ['QA'],
+                ['SA'],
+                ['SG'],
+                ['LK'],
+                ['SY'],
+                ['TW'],
+                ['TJ'],
+                ['TH'],
+                ['TL'],
+                ['TR'],
+                ['TM'],
+                ['AE'],
+                ['UZ'],
+                ['VN'],
+                ['YE'],";
+
+        $ceu = "['AX'],
+                ['AL'],
+                ['AD'],
+                ['AT'],
+                ['BY'],
+                ['BE'],
+                ['BA'],
+                ['BG'],
+                ['HR'],
+                ['CZ'],
+                ['DK'],
+                ['EE'],
+                ['FO'],
+                ['FI'],
+                ['FR'],
+                ['DE'],
+                ['GI'],
+                ['GR'],
+                ['GG'],
+                ['VA'],
+                ['HU'],
+                ['IS'],
+                ['IE'],
+                ['IM'],
+                ['IT'],
+                ['JE'],
+                ['LV'],
+                ['LI'],
+                ['LT'],
+                ['LU'],
+                ['MT'],
+                ['MD'],
+                ['MC'],
+                ['ME'],
+                ['NL'],
+                ['MK'],
+                ['NO'],
+                ['PL'],
+                ['PT'],
+                ['RO'],
+                ['RU'],
+                ['SM'],
+                ['RS'],
+                ['SK'],
+                ['SI'],
+                ['ES'],
+                ['SJ'],
+                ['SE'],
+                ['CH'],
+                ['UA'],
+                ['GB'],";
+
+        $csa = "['AR'],
+                ['BO'],
+                ['BR'],
+                ['CL'],
+                ['CO'],
+                ['EC'],
+                ['FK'],
+                ['GF'],
+                ['GY'],
+                ['PY'],
+                ['PE'],
+                ['SR'],
+                ['UY'],
+                ['VE'],";
+
+        $ww  = $caf . $cna . $coc . $can . $cas . $ceu . $csa;
+
         // 1 Organisers
         $organisers = $project->organisers()->pluck('short_code')->toArray();
         $organisersstring = "['country'],";
         foreach ($organisers as $organiser) {
-            $organisersstring .= '[\''.strtoupper($organiser).'\'],';
+            // for Continents and Worldwide, include all relevant country codes
+            switch ($organiser) {
+                case "caf":
+                    $organisersstring .= $caf;
+                    break;
+
+                case "cna":
+                    $organisersstring .= $cna;
+                    break;
+
+                case "coc":
+                    $organisersstring .= $coc;
+                    break;
+
+                case "can":
+                    $organisersstring .= $can;
+                    break;
+
+                case "cas":
+                    $organisersstring .= $cas;
+                    break;
+
+                case "ceu":
+                    $organisersstring .= $ceu;
+                    break;
+
+                case "csa":
+                    $organisersstring .= $csa;
+                    break;
+
+                case "ww":
+                    $organisersstring .= $ww;
+                    break;
+                // Or just the selected country code
+                default:
+                    $organisersstring .= '[\''.strtoupper($organiser).'\'],';
+            }
+            
         }
 
         // 2 Participants
         $participants = $project->participants()->pluck('short_code')->toArray();
         $participantsstring = "['country'],";
         foreach ($participants as $participant) {
-            $participantsstring .= '[\''.strtoupper($participant).'\'],';
+            // for Continents and Worldwide, include all relevant country codes
+            switch ($participant) {
+                case "caf":
+                    $participantsstring .= $caf;
+                    break;
+
+                case "cna":
+                    $participantsstring .= $cna;
+                    break;
+
+                case "coc":
+                    $participantsstring .= $coc;
+                    break;
+
+                case "can":
+                    $participantsstring .= $can;
+                    break;
+
+                case "cas":
+                    $participantsstring .= $cas;
+                    break;
+
+                case "ceu":
+                    $participantsstring .= $ceu;
+                    break;
+
+                case "csa":
+                    $participantsstring .= $csa;
+                    break;
+
+                case "ww":
+                    $participantsstring .= $ww;
+                    break;
+                // Or just the selected country code
+                default:
+                    $participantsstring .= '[\''.strtoupper($participant).'\'],';
+            }
         }
 
         // 3 Observers
         $observers = $project->observers()->pluck('short_code')->toArray();
         $observersstring = "['country'],";
         foreach ($observers as $observer) {
-            $observersstring .= '[\''.strtoupper($observer).'\'],';
+            // for Continents and Worldwide, include all relevant country codes
+            switch ($observer) {
+                case "caf":
+                    $observersstring .= $caf;
+                    break;
+
+                case "cna":
+                    $observersstring .= $cna;
+                    break;
+
+                case "coc":
+                    $observersstring .= $coc;
+                    break;
+
+                case "can":
+                    $observersstring .= $can;
+                    break;
+
+                case "cas":
+                    $observersstring .= $cas;
+                    break;
+
+                case "ceu":
+                    $observersstring .= $ceu;
+                    break;
+
+                case "csa":
+                    $observersstring .= $csa;
+                    break;
+
+                case "ww":
+                    $observersstring .= $ww;
+                    break;
+                // Or just the selected country code
+                default:
+                    $observersstring .= '[\''.strtoupper($observer).'\'],';
+            }
         }
         
         
