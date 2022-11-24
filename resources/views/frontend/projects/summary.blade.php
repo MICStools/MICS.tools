@@ -32,10 +32,24 @@
                         {!! $observersstring !!}
                     ]);
 
-                    var options = {
+                    var options1 = {
                         backgroundColor: '#535364',
                         datalessRegionColor: '#b4b4b7',
                         defaultColor: '#84ade9',
+                        region: 'auto'
+                    };
+
+                    var options2 = {
+                        backgroundColor: '#535364',
+                        datalessRegionColor: '#b4b4b7',
+                        defaultColor: '#f4c627',
+                        region: 'auto'
+                    };
+
+                    var options3 = {
+                        backgroundColor: '#535364',
+                        datalessRegionColor: '#b4b4b7',
+                        defaultColor: '#df6489',
                         region: 'auto'
                     };
 
@@ -43,9 +57,9 @@
                     var chart2 = new google.visualization.GeoChart(document.getElementById('regions_div2'));
                     var chart3 = new google.visualization.GeoChart(document.getElementById('regions_div3'));
 
-                    chart1.draw(data1, options);
-                    chart2.draw(data2, options);
-                    chart3.draw(data3, options);
+                    chart1.draw(data1, options1);
+                    chart2.draw(data2, options2);
+                    chart3.draw(data3, options3);
                 }
 
             </script>            
