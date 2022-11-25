@@ -1147,8 +1147,19 @@ td.recommendationscore {
 
 #mapnav input:checked+label {
     font-weight: bold;
-    color: #84ade9;
 }
+
+    #mapnav input#organisers:checked+label {
+        color: var(--domain-economy-secondary);
+    }
+
+    #mapnav input#participants:checked+label {
+        color: var(--domain-society-primary);
+    }
+
+    #mapnav input#observers:checked+label {
+        color: var(--domain-governance-primary);
+    }
 
 .mapregion {
     width: 650px; height: 440px; position: absolute; top: 40px; 

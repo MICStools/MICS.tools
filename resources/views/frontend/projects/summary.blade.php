@@ -35,21 +35,21 @@
                     var options1 = {
                         backgroundColor: '#535364',
                         datalessRegionColor: '#b4b4b7',
-                        defaultColor: '#84ade9',
+                        defaultColor: '#97ccfe',
                         region: 'auto'
                     };
 
                     var options2 = {
                         backgroundColor: '#535364',
                         datalessRegionColor: '#b4b4b7',
-                        defaultColor: '#f4c627',
+                        defaultColor: '#eeba30',
                         region: 'auto'
                     };
 
                     var options3 = {
                         backgroundColor: '#535364',
                         datalessRegionColor: '#b4b4b7',
-                        defaultColor: '#df6489',
+                        defaultColor: '#e15477',
                         region: 'auto'
                     };
 
