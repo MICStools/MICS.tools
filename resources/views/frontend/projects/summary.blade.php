@@ -171,7 +171,7 @@
     <div class="row mt-2">
         <div class="col-12" style="padding: 1em; background: var(--mics-navy); color: white; position: relative; overflow: hidden;">
             <h3>Recommendations</h3>
-            <p>The following recommendations are determined by the scores the project received in the previous section. The recommendations are based on citizen-science best practice as defined in the current scientific literature and how other projects have taken action to improve their impact in specific areas. Of course, following these recommendations does not guarantee the project will suddenly have a higher impact; it all depends on the specific context of each project, but the might provide helpful inspiration.</p>
+            <p>The following recommendations are determined by the scores the project received in the previous section. The recommendations are based on citizen-science best practice as defined in the current scientific literature and how other projects have taken action to improve their impact in specific areas. Of course, following these recommendations does not guarantee the project will suddenly have a higher impact; it all depends on the specific context of each project, but they might provide helpful inspiration.</p>
         </div>
     </div>
     
