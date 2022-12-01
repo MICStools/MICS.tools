@@ -78,6 +78,12 @@
                                             @endforeach
                                         </td>
                                         <td>
+
+                                            @if(request()->has('bin'))
+                                                <a href="{{ route('admin.users.restore', $user->id) }}" class="btn btn-success">Restore</a>
+                                            @endif
+
+
                                             @can('user_show')
                                                 <a class="btn btn-xs btn-primary" href="{{ route('admin.users.show', $user->id) }}">
                                                     {{ trans('global.view') }}

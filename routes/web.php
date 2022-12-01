@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::post('users/media', 'UsersController@storeMedia')->name('users.storeMedia');
     Route::post('users/ckmedia', 'UsersController@storeCKEditorImages')->name('users.storeCKEditorImages');
+    Route::get('users/restore/{id}', 'UsersController@restore')->name('users.restore');
     Route::resource('users', 'UsersController');
 
     // Domains

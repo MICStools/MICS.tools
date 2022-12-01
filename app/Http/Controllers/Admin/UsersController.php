@@ -18,11 +18,15 @@ class UsersController extends Controller
 {
     use MediaUploadingTrait;
 
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::with(['roles', 'media'])->get();
+        if ($request->has('bin')) {
+            $users = User::onlyTrashed()->with(['roles', 'media'])->get();
+        } else {
+            $users = User::with(['roles', 'media'])->get();
+        }
 
         return view('admin.users.index', compact('users'));
     }
@@ -115,5 +119,14 @@ class UsersController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function restore($id)
+    {
+        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        User::withTrashed()->find($id)->restore();
+
+        return back();
     }
 }
