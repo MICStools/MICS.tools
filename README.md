@@ -1,7 +1,8 @@
 ## Creating an instance of mics.tools platform
 
+The MICS platform has been developed using the Laravel web application framework, details of which can be found at the end of this document. The following steps describe how to install and setup the software, services and code required to instantiate an instance of the platform locally. Github can them be used in the normal manner to branch the repository and pull and push commits as deemed fit!
 
-
+For more information regarding the use and sharing of this code, contact Earthwatch Europe 
 
 __________________________________________________________________________________________________________________________________________________________________
 
