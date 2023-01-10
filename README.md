@@ -7,7 +7,7 @@ For more information regarding the use and sharing of this code, contact Earthwa
 ## Software to install
 
 - A GitHub GUI client, such as [Smartgit](https://www.syntevo.com/smartgit/), for easy pulling and pushing of platform code and amendments.
-- A code editor for editing, such as [Siblime Text](https://www.sublimetext.com/) or [VS code](https://code.visualstudio.com/)
+- A code editor for editing, such as [Sublime Text](https://www.sublimetext.com/) or [VS code](https://code.visualstudio.com/)
 - A vector graphics editor is optional, for editing the graphics and imagery of MICS. [Inkscape](https://inkscape.org/) is an open-source example.
 
 
