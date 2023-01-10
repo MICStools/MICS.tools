@@ -2,7 +2,15 @@
 
 The MICS platform has been developed using the Laravel web application framework, details of which can be found at the end of this document. The following steps describe how to install and setup the software, services and code required to instantiate an instance of the platform locally. Github can them be used in the normal manner to branch the repository and pull and push commits as deemed fit!
 
-For more information regarding the use and sharing of this code, contact Earthwatch Europe 
+For more information regarding the use and sharing of this code, contact Earthwatch Europe at jsprinks@earthwatch.org.
+
+## Software to install
+
+- A GitHub GUI client, such as [Smartgit](https://www.syntevo.com/smartgit/), for easy pulling and pushing of platform code and amendments.
+- A code editor for editing, such as [Siblime Text](https://www.sublimetext.com/) or [VS code](https://code.visualstudio.com/)
+- A vector graphics editor is optional, for editing the graphics and imagery of MICS. [Inkscape](https://inkscape.org/) is an open-source example.
+
+
 
 __________________________________________________________________________________________________________________________________________________________________
 
