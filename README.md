@@ -22,7 +22,8 @@ To configure your server:
 
 ![image](https://user-images.githubusercontent.com/80452185/212075801-2e7ea39d-e2db-4b1b-804f-a5bb48200e83.png)
 
- - Configure as follows: Set the name as <b>mics.local</b>; set the path as <b>c:\wamp\www\mics.local\public</b>; select the checkbox for PHP mode and set to 8.0.26 in the drop down menu; and finally there is no need to set an IP adress, so leave blank.
+ - Configure as follows: Set the name as <b>mics.local</b>; set the path as <b>c:\wamp\www\mics.local\public</b>; select the checkbox for PHP mode and set to <b>8.0.26</b> in the drop down menu; and finally there is no need to set an IP adress, so leave blank.
+ - Click on <b>Start the creation...</b>, it should not take too long.
  
 
 
