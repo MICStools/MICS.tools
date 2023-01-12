@@ -10,6 +10,20 @@ For more information regarding the use and sharing of this code, contact Earthwa
 - A code editor for editing, such as [Sublime Text](https://www.sublimetext.com/) or [VS code](https://code.visualstudio.com/).
 - A vector graphics editor is optional, for editing the graphics and imagery of MICS. [Inkscape](https://inkscape.org/) is an open-source example.
 
+## Setting up a local server to host the platform
+
+Firstly, you will need to install a windows web development environment, we recommend [wampserver](https://www.wampserver.com/en/). After installation, clone the mics.tools repository to C:\wamp\www\mics.local, using Smartgit or your preferred method.
+
+To configure your server:
+
+ - Open a browser (the one you set as default when installing wampserver), and go to the url 'localhost'.
+ - Select 'Add a virtual host' in the bottom left-hand corner of the screen.
+ - You should see this screen (or very similar):
+
+![image](https://user-images.githubusercontent.com/80452185/212075801-2e7ea39d-e2db-4b1b-804f-a5bb48200e83.png)
+
+ - Configure as follows: Set the name as <b>mics.local</b>; set the path as <b>c:\wamp\www\mics.local\public</b>; select the checkbox for PHP mode and set to 8.0.26 in the drop down menu; and finally there is no need to set an IP adress, so leave blank.
+ 
 
 
 __________________________________________________________________________________________________________________________________________________________________
