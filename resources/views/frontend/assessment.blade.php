@@ -91,6 +91,12 @@
                 // unhide the SVG (hidden to stop FOUC)
                 dotpath.style.opacity = 1;
 
+                // Re-define the Halcom webfont for SVG, as apparently the SVG object isn't getting it from the parent HTML file
+                var svgDoc = dotpath.contentDocument;
+                var style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+                style.innerHTML = "@font-face { font-family: 'Halcom-Medium'; src: url('/css/Halcom-Medium.otf'); }";
+                svgDoc.getElementsByTagName('defs')[0].appendChild(style);
+
                 // Animate the line in
                 gsap.to(path, {
                     duration: 5,
