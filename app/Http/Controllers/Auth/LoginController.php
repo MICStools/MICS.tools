@@ -120,12 +120,12 @@ class LoginController extends Controller
 
     public function twitter() {
         // send the user's request to twitter
-        return Socialite::driver('twitter')->redirect();
+        return Socialite::driver('twitter-oauth-2')->redirect();
     }
 
     public function twitterRedirect() {
         // get oauth request back from twitter to authenticate user
-        $user = Socialite::driver('twitter')->user();
+        $user = Socialite::driver('twitter-oauth-2')->user();
 
         // if the user doesn't exist, add them
         // if they do, get the model
