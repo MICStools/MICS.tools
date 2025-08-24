@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -185,8 +186,38 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $project = Project::onlyTrashed()->findOrFail($id);
-        $project->forceDelete();
+        $project = Project::onlyTrashed()
+            ->with(['organisers', 'participants', 'observers', 'topics'])
+            ->findOrFail($id);
+
+        DB::transaction(function () use ($project) {
+            // 1) Delete hasMany children that have FKs to projects.id
+            // Results (adjust relation name/table if needed)
+            // If Result uses SoftDeletes, hard delete them:
+            if (method_exists($project, 'projectResults')) {
+                $project->projectResults()->withTrashed()->forceDelete();
+            }
+
+            // 2) Detach all many-to-many pivots
+            $project->organisers()->detach();
+            $project->participants()->detach();
+            $project->observers()->detach();
+            $project->topics()->detach();
+            if (method_exists($project, 'projectsAnswers')) {
+                $project->projectsAnswers()->detach();
+            }
+
+            // 3) Remove media (Spatie)
+            try {
+                // safest: delete all model media records/files
+                $project->media()->each->delete();
+            } catch (\Throwable $e) {
+                // non-fatal
+            }
+
+            // 4) Finally remove the project row
+            $project->forceDelete();
+        });
 
         return redirect()->route('admin.projects.trashed')->with('success', 'Project permanently deleted.');
     }
