@@ -33,7 +33,7 @@
                                     <th>{{ trans('cruds.project.fields.uri') }}</th>
                                     <th>{{ trans('cruds.project.fields.organisers') }}</th> 
 --}}
-                                    <th>Deleted at</th> {{-- NEW --}}
+                                    <th>Deleted at</th>
                                     <th>&nbsp;</th>
                                 </tr>
                             </thead>
