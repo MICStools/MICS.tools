@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mics_app
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+      - mailhog
+    networks:
+      - micsnet
+
+  db:
+    image: mysql:8.0
+    container_name: mics_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: micsrecommendations
+      MYSQL_USER: micsrecommendations
+      MYSQL_PASSWORD: micspassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - micsnet
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mics_mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - micsnet
+
+volumes:
+  db_data:
+
+networks:
+  micsnet:
+

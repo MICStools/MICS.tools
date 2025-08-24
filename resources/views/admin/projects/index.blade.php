@@ -7,6 +7,11 @@
                 <a class="btn btn-success" href="{{ route('admin.projects.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.project.title_singular') }}
                 </a>
+
+                {{-- Button to view soft-deleted (trashed) projects --}}
+                <a class="btn btn-default pull-right" href="{{ route('admin.projects.trashed') }}" title="View soft-deleted Projects">
+                    <i class="fa fa-trash"></i>
+                </a>
             </div>
         </div>
     @endcan

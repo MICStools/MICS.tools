@@ -72,6 +72,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('projects/destroy', 'ProjectsController@massDestroy')->name('projects.massDestroy');
     Route::post('projects/media', 'ProjectsController@storeMedia')->name('projects.storeMedia');
     Route::post('projects/ckmedia', 'ProjectsController@storeCKEditorImages')->name('projects.storeCKEditorImages');
+
+    // Routes for managing soft-deleted (trashed) projects
+    Route::get('projects/trashed', 'ProjectsController@trashed')->name('projects.trashed');
+    Route::post('projects/{project}/update-slug', 'ProjectsController@updateSlug')->name('projects.updateSlug');
+    Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');
+    Route::delete('projects/{project}/force-delete', 'ProjectsController@forceDelete')->name('projects.forceDelete');
+    
     Route::resource('projects', 'ProjectsController');
 
     // Answers

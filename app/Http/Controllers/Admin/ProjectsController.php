@@ -144,4 +144,51 @@ class ProjectsController extends Controller
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
+
+    // Soft-deleted (trashed) project management functionality
+    public function trashed()
+    {
+        abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $projects = Project::onlyTrashed()->with('user')->get();
+
+        return view('admin.projects.trashed', compact('projects'));
+    }
+
+    public function updateSlug(Request $request, $id)
+    {
+        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $project = Project::onlyTrashed()->findOrFail($id);
+
+        $request->validate([
+            'slug' => 'required|string|unique:projects,slug,' . $project->id,
+        ]);
+
+        $project->slug = $request->input('slug');
+        $project->save();
+
+        return redirect()->route('admin.projects.trashed')->with('success', 'Slug updated.');
+    }
+
+    public function restore($id)
+    {
+        abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->restore();
+
+        return redirect()->route('admin.projects.trashed')->with('success', 'Project restored.');
+    }
+
+    public function forceDelete($id)
+    {
+        abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->forceDelete();
+
+        return redirect()->route('admin.projects.trashed')->with('success', 'Project permanently deleted.');
+    }
+
 }
