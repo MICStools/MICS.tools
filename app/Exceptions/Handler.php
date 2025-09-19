@@ -3,7 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Spatie\Honeypot\Exceptions\SpamException;
 
 class Handler extends ExceptionHandler
 {
@@ -28,13 +33,36 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (\Spatie\Honeypot\Exceptions\SpamException $e, \Illuminate\Http\Request $request) {
+            \Log::debug('Caught SpamException');
+
+            if ($request->routeIs('password.email')) {
+                return redirect()
+                    ->to('/password/reset')
+                    ->withInput()
+                    ->withErrors([
+                        'email' => 'Spam detected. Please try again.',
+                    ]);
+            }
+
+            return response('Spam detected', 422);
         });
+    }
+
+
+    /**
+     * Override the render method to handle validation exceptions gracefully.
+     */
+    public function render($request, Throwable $exception)
+    {
+        // Optionally log validation exceptions for debugging
+        if ($exception instanceof ValidationException) {
+            Log::debug('ValidationException: ' . json_encode($exception->errors()));
+        }
+
+        return parent::render($request, $exception);
     }
 }

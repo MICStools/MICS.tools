@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 //Route::view('/', 'welcome');
 Route::get('/', 'HomeController@index');
@@ -20,6 +22,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Auth::routes();
+
+// Password reset route with honeypot middleware applied
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('password.email');
 
 // Social logins - added (not part of Auth::routes())
 Route::get('login/google', 'Auth\LoginController@google');
