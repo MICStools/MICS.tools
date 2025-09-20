@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:7.4-apache
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN a2enmod rewrite headers expires

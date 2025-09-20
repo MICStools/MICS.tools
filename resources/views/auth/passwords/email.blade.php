@@ -29,7 +29,8 @@
             @csrf
 
             {{-- Honeypot field --}}
-            <x-honeypot />
+            @honeypot
+
 
             <input type="hidden" name="form_start" value="{{ now()->timestamp }}">
 
