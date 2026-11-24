@@ -1,0 +1,25 @@
+name: PHP compatibility
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP 8.3.37
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3.37
+          extensions: gd, intl, pdo_mysql, mbstring, zip, xml, opcache, exif
+          coverage: none
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Check platform requirements
+        run: composer check-platform-reqs
+      - name: Check Laravel boots and routes load
+        run: php artisan route:list
+      - name: Run unit tests
+        run: vendor/bin/phpunit tests/Unit
